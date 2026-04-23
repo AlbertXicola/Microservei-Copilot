@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copilot — Guía Profesional · microservei</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--cyan:#22EFE0;--purple:#3F25BF;--cyan-dim:rgba(34,239,224,.15);--purple-dim:rgba(63,37,191,.18);--sidebar-w:264px;--radius:10px;--radius-lg:14px}
+[data-theme="dark"]{--bg:#07080d;--bg2:#0f1118;--bg3:#181c26;--bg4:#21263a;--border:rgba(255,255,255,.07);--border2:rgba(34,239,224,.18);--text:#e8ecf5;--text2:#b4b4b4;--text3:#dadada;--accent:var(--cyan);--accent2:var(--purple);--accent-glow:var(--cyan-dim);--card-bg:#0f1118;--card-bg2:#181c26;--green:#22c55e;--green-bg:rgba(34,197,94,.1);--red:#ef4444;--red-bg:rgba(239,68,68,.1);--amber:#f59e0b;--amber-bg:rgba(245,158,11,.1);--info-bg:var(--cyan-dim)}
+[data-theme="light"]{--bg:#f0f4fc;--bg2:#ffffff;--bg3:#f5f7fc;--bg4:#e8edf8;--border:rgba(0,0,0,.08);--border2:rgba(63,37,191,.25);--text:#0d0e1a;--text2:#3a3f58;--text3:#7a82a0;--accent:#1abfb3;--accent2:var(--purple);--accent-glow:rgba(26,191,179,.12);--card-bg:#ffffff;--card-bg2:#f0f4fc;--green:#16a34a;--green-bg:rgba(22,163,74,.08);--red:#dc2626;--red-bg:rgba(220,38,38,.08);--amber:#d97706;--amber-bg:rgba(217,119,6,.08);--info-bg:rgba(26,191,179,.1)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+.bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0;animation:orbFloat linear infinite}
+.orb1{width:600px;height:600px;background:radial-gradient(circle,var(--cyan) 0%,transparent 70%);top:-200px;left:-200px;animation-duration:18s}
+.orb2{width:500px;height:500px;background:radial-gradient(circle,var(--purple) 0%,transparent 70%);bottom:-150px;right:-150px;animation-duration:22s;animation-delay:-8s}
+.orb3{width:350px;height:350px;background:radial-gradient(circle,var(--cyan) 0%,transparent 70%);top:40%;right:10%;animation-duration:16s;animation-delay:-4s}
+.orb4{width:280px;height:280px;background:radial-gradient(circle,var(--purple) 0%,transparent 70%);bottom:20%;left:15%;animation-duration:24s;animation-delay:-12s}
+@keyframes orbFloat{0%{opacity:0;transform:translate(0,0) scale(1)}15%{opacity:.18}50%{opacity:.12;transform:translate(40px,-30px) scale(1.1)}85%{opacity:.18}100%{opacity:0;transform:translate(0,0) scale(1)}}
+[data-theme="light"] .orb{opacity:0!important}
+[data-theme="light"] .bg-canvas::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(34,239,224,.04) 0%,rgba(63,37,191,.05) 100%)}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:44px 44px;opacity:.4}
+[data-theme="light"] .bg-grid{opacity:.25}
+body::before,body::after{content:"";position:fixed;inset:-20%;z-index:-1;background-repeat:no-repeat;opacity:.7;filter:blur(80px);transform-origin:center;pointer-events:none;animation:orbit-bg 60s linear infinite}
+body::before{background-image:radial-gradient(circle at 20% 30%,rgba(113,250,241,.18),transparent 40%),radial-gradient(circle at 80% 20%,rgba(63,37,191,.18),transparent 45%),radial-gradient(circle at 60% 80%,rgba(106,62,238,.25),transparent 50%)}
+body::after{background-image:radial-gradient(circle at 30% 70%,rgba(113,250,241,.18),transparent 45%),radial-gradient(circle at 70% 50%,rgba(106,62,238,.25),transparent 50%);animation-duration:55s}
+@keyframes orbit-bg{0%{transform:rotate(0deg) translateX(4%) rotate(0deg)}50%{transform:rotate(180deg) translateX(6%) rotate(-180deg)}100%{transform:rotate(360deg) translateX(4%) rotate(-360deg)}}
+.layout{display:flex;min-height:100vh;position:relative;z-index:1}
+.sidebar{width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;display:flex;flex-direction:column;transition:transform .3s,background .3s}
+.main{margin-left:var(--sidebar-w);flex:1;min-height:100vh}
+.sidebar-header{padding:20px 18px 16px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:14px}
+.ms-logo{width:120px;height:auto;display:block}
+.copilot-badge{display:flex;align-items:center;gap:8px;background:var(--accent-glow);border:1px solid var(--border2);border-radius:8px;padding:7px 10px}
+.copilot-logo{width:22px;height:22px;object-fit:contain;flex-shrink:0}
+.copilot-badge-text{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.04em;font-family:'Syne',sans-serif}
+.copilot-badge-sub{font-size:10px;color:var(--text3);margin-top:1px}
+.nav-group{padding:10px 10px 4px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:8px;cursor:pointer;transition:all .15s;margin:1px 6px;font-size:12.5px;color:var(--text2);font-weight:400;border:none;background:none;width:calc(100% - 12px);text-align:left;font-family:'DM Sans',sans-serif}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--accent-glow);color:var(--accent);border:1px solid var(--border2);font-weight:500}
+.nav-icon{font-size:13px;width:16px;text-align:center;flex-shrink:0;opacity:.7}
+.nav-item.active .nav-icon{opacity:1}
+.nav-badge{margin-left:auto;font-size:9px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;padding:2px 7px;border-radius:10px;font-weight:600}
+.sidebar-footer{margin-top:auto;padding:14px 12px;border-top:1px solid var(--border)}
+.theme-btn{display:flex;align-items:center;gap:8px;width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;font-weight:500;margin-bottom:10px}
+.theme-btn:hover{background:var(--accent-glow);color:var(--accent)}
+.theme-icon{font-size:15px}
+.topbar{display:none;position:sticky;top:0;z-index:99;background:var(--bg2);border-bottom:1px solid var(--border);padding:0 16px;height:56px;align-items:center;gap:12px}
+.menu-btn{background:none;border:none;color:var(--text);cursor:pointer;padding:6px;border-radius:6px;font-size:20px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99}
+.overlay.open{display:block}
+.page{display:none;padding:44px 52px;max-width:900px;margin:0 auto;animation:fadein .3s ease}
+.page.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;letter-spacing:-.8px;color:var(--text);margin-bottom:8px;line-height:1.15}
+h2{font-family:'Syne',sans-serif;font-size:21px;font-weight:700;letter-spacing:-.4px;color:var(--text);margin:34px 0 10px}
+h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin:22px 0 10px}
+h4{font-size:12px;font-weight:600;color:var(--text3);margin:16px 0 7px;text-transform:uppercase;letter-spacing:.07em}
+p{font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:10px}
+.lead{font-size:14px;color:var(--text2);line-height:1.75;margin:10px 0 20px;max-width:700px}
+.page-header{margin-bottom:28px;padding-bottom:22px;border-bottom:1px solid var(--border)}
+.section-chip{display:inline-flex;align-items:center;gap:6px;background:var(--accent-glow);border:1px solid var(--border2);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--accent);margin-bottom:14px;letter-spacing:.06em;text-transform:uppercase;font-family:'Syne',sans-serif}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:14px;transition:border-color .2s}
+.card:hover{border-color:var(--border2)}
+.card2{background:var(--card-bg2);border-radius:var(--radius);padding:15px;margin-bottom:10px}
+.card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+.prompt-label{font-size:10px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.prompt{font-family:'DM Mono',monospace;font-size:12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px 15px;margin:6px 0 14px;color:var(--text2);line-height:1.75;white-space:pre-wrap;position:relative}
+.prompt-bad{background:var(--red-bg);border-color:rgba(239,68,68,.3)}
+.prompt-good{background:var(--green-bg);border-color:rgba(34,197,94,.3)}
+.copy-btn{position:absolute;top:9px;right:9px;background:var(--bg4);border:1px solid var(--border);color:var(--text3);font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;display:flex;align-items:center;gap:4px}
+.copy-btn:hover{background:var(--accent);color:#07080d;border-color:var(--accent);font-weight:600}
+.infobox,.warnbox,.dangerbox,.successbox{border-radius:var(--radius);padding:12px 16px;margin:12px 0;font-size:13px;line-height:1.7}
+.infobox{background:var(--info-bg);border-left:3px solid var(--accent);color:var(--text)}
+.warnbox{background:var(--amber-bg);border-left:3px solid var(--amber);color:var(--text)}
+.dangerbox{background:var(--red-bg);border-left:3px solid var(--red);color:var(--text)}
+.successbox{background:var(--green-bg);border-left:3px solid var(--green);color:var(--text)}
+.tag{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;margin:2px}
+.t-cyan{background:var(--accent-glow);color:var(--accent);border:1px solid rgba(34,239,224,.25)}
+.t-purple{background:var(--purple-dim);color:#a78bfa;border:1px solid rgba(167,139,250,.25)}
+.t-green{background:var(--green-bg);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.t-amber{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.t-red{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.t-gray{background:var(--bg4);color:var(--text3);border:1px solid var(--border)}
+.steps{display:flex;flex-direction:column;margin:14px 0}
+.step-item{display:flex;gap:14px;position:relative}
+.step-line{position:absolute;left:13px;top:28px;bottom:0;width:1px;background:var(--border2)}
+.step-item:last-child .step-line{display:none}
+.step-dot{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:2px solid var(--accent);color:var(--accent);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;font-family:'Syne',sans-serif}
+.step-body{flex:1;padding-bottom:20px}
+.step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.step-desc{font-size:13px;color:var(--text2);line-height:1.65}
+.tbl-wrap{overflow-x:auto;margin:12px 0;border-radius:var(--radius-lg);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead{background:var(--bg3)}
+th{text-align:left;font-weight:600;font-size:11px;color:var(--text3);padding:10px 14px;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border)}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text2);line-height:1.55;vertical-align:top}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--bg3)}
+.level-item{display:flex;gap:14px;padding:16px;border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:10px;transition:border-color .2s}
+.level-item:hover{border-color:var(--border2)}
+.level-bar{width:3px;border-radius:2px;flex-shrink:0}
+.level-body{flex:1}
+.level-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.level-desc{font-size:13px;color:var(--text2);line-height:1.6}
+.level-ex{font-size:11.5px;color:var(--text3);margin-top:8px;padding:8px 12px;background:var(--bg3);border-radius:8px;font-family:'DM Mono',monospace;line-height:1.65}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:7px}
+.checklist li{display:flex;gap:10px;font-size:13px;color:var(--text2);line-height:1.55}
+.ci{flex-shrink:0;font-size:14px;margin-top:1px}
+.ci.ok{color:var(--green)}.ci.no{color:var(--red)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.cb{background:var(--red-bg);border:1px solid rgba(239,68,68,.25);border-radius:var(--radius);padding:12px}
+.cg{background:var(--green-bg);border:1px solid rgba(34,197,94,.25);border-radius:var(--radius);padding:12px}
+.clabel{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+.cb .clabel{color:var(--red)}.cg .clabel{color:var(--green)}
+.ctext{font-size:12px;color:var(--text2);line-height:1.55}
+.formula{border:1px solid rgba(245,158,11,.3);border-radius:var(--radius-lg);padding:18px;margin:14px 0;background:var(--amber-bg)}
+.formula-lbl{font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px}
+.formula-main{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px}
+.formula-ex{font-size:12px;color:var(--text3);line-height:1.65;font-family:'DM Mono',monospace}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+.metric{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;text-align:center}
+.metric-n{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--accent)}
+.metric-l{font-size:11px;color:var(--text3);margin-top:4px}
+.agent-card{display:flex;gap:14px;padding:18px;border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:12px;transition:all .2s}
+.agent-card:hover{border-color:var(--border2);background:var(--bg3)}
+.agent-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.agent-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.agent-desc{font-size:13px;color:var(--text2);line-height:1.6}
+.agent-prompt{font-size:11.5px;font-family:'DM Mono',monospace;color:var(--text3);margin-top:8px;padding:8px 10px;background:var(--bg3);border-radius:8px;line-height:1.6}
+.divider{height:1px;background:var(--border);margin:26px 0}
+.pill-nav{display:flex;gap:6px;flex-wrap:wrap;background:var(--bg3);border-radius:10px;padding:5px;margin-bottom:18px}
+.pill{padding:6px 13px;border-radius:7px;font-size:12px;cursor:pointer;border:none;background:none;color:var(--text3);transition:all .15s;font-family:'DM Sans',sans-serif;font-weight:500}
+.pill:hover{color:var(--text);background:var(--bg4)}
+.pill.on{background:var(--accent);color:#07080d;font-weight:600}
+.home-hero{padding:52px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px;position:relative}
+.home-eyebrow{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;font-family:'Syne',sans-serif}
+.home-title{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;line-height:1.05;letter-spacing:-1.5px;color:var(--text);margin-bottom:18px}
+.home-title .hl{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.home-stats{display:flex;gap:32px;flex-wrap:wrap;margin-top:28px}
+.stat-n{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--accent)}
+.stat-l{font-size:11px;color:var(--text3);margin-top:3px}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.home-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
+.home-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-glow),var(--purple-dim));opacity:0;transition:opacity .22s}
+.home-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.home-card:hover::before{opacity:1}
+.hc-icon{font-size:22px;margin-bottom:12px;position:relative;z-index:1}
+.hc-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:5px;position:relative;z-index:1}
+.hc-desc{font-size:12px;color:var(--text3);line-height:1.6;position:relative;z-index:1}
+.hc-arrow{position:absolute;bottom:16px;right:16px;color:var(--accent);font-size:16px;opacity:0;transition:opacity .2s,transform .2s;z-index:1}
+.home-card:hover .hc-arrow{opacity:1;transform:translateX(3px)}
+.app-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:14px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.app-emoji{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.app-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text)}
+.app-sub{font-size:12px;color:var(--text3);margin-top:1px}
+.model-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:14px}
+.model-header{display:flex;align-items:center;gap:12px;padding:16px;background:var(--bg3)}
+.model-logo{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;font-weight:800;font-family:'Syne',sans-serif}
+.model-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text)}
+.model-version{font-size:11px;color:var(--text3);margin-top:2px}
+.model-body{padding:16px;background:var(--card-bg)}
+.model-body p{font-size:13px;color:var(--text2);line-height:1.7;margin:0 0 10px}
+.model-features{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.integration-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:14px;transition:all .2s}
+.integration-card:hover{border-color:var(--border2)}
+.int-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.int-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.int-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text)}
+.int-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.tutorial-steps{counter-reset:tut}
+.tut-step{display:flex;gap:14px;margin-bottom:16px;padding:16px;background:var(--bg3);border-radius:var(--radius-lg);border-left:3px solid var(--accent)}
+.tut-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#07080d;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif}
+.tut-body .tut-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px}
+.tut-body .tut-desc{font-size:12.5px;color:var(--text2);line-height:1.65}
+/* Modo selector card */
+.mode-card{display:flex;align-items:flex-start;gap:14px;padding:16px;border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:10px;transition:border-color .2s}
+.mode-card:hover{border-color:var(--border2)}
+.mode-badge{min-width:100px;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:700;text-align:center;flex-shrink:0;font-family:'Syne',sans-serif;margin-top:2px}
+.mode-content .mode-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px}
+.mode-content .mode-desc{font-size:12px;color:var(--text2);line-height:1.6}
+.mode-content .mode-use{font-size:11px;color:var(--text3);margin-top:5px;font-style:italic}
+/* Tip block */
+.tip-block{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:12px 15px;margin:10px 0;font-size:12.5px;color:var(--text2);line-height:1.65}
+.tip-block strong{color:var(--accent)}
+/* Feature pill row */
+.feature-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+/* Shortcut table */
+.shortcut-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:12.5px}
+.shortcut-row:last-child{border-bottom:none}
+.shortcut-key{font-family:'DM Mono',monospace;font-size:11px;background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:3px 8px;color:var(--accent)}
+/* Expandable section */
+.expand-section{border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:10px;overflow:hidden}
+.expand-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;cursor:pointer;background:var(--bg3);transition:background .15s}
+.expand-header:hover{background:var(--bg4)}
+.expand-title{font-size:13px;font-weight:600;color:var(--text)}
+.expand-arrow{color:var(--accent);font-size:14px;transition:transform .2s}
+.expand-body{padding:16px;background:var(--card-bg);display:none}
+.expand-body.open{display:block}
+.expand-section.open .expand-arrow{transform:rotate(180deg)}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}.topbar{display:flex}.page{padding:24px 18px}
+  .home-title{font-size:30px}.home-grid,.g2,.g3,.compare,.metrics{grid-template-columns:1fr}
+  h1{font-size:22px}
+}
+.sidebar::-webkit-scrollbar{width:3px}.sidebar::-webkit-scrollbar-thumb{background:var(--border2)}
+</style>
+</head>
+<body>
+<div class="bg-canvas"><div class="bg-grid"></div><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div><div class="orb orb4"></div></div>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div class="layout">
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <img class="ms-logo" id="logo-main" src="logo-dark.png" alt="microservei">
+    <div class="copilot-badge">
+      <img class="copilot-logo" src="copilot-color.png" alt="Microsoft Copilot">
+      <div><div class="copilot-badge-text">Microsoft Copilot</div><div class="copilot-badge-sub">Guía Profesional M365</div></div>
+    </div>
+  </div>
+  <div class="nav-group">Inicio</div>
+  <button class="nav-item active" onclick="show('home',this)"><span class="nav-icon">⌂</span>Home</button>
+  <button class="nav-item" onclick="show('indice',this)"><span class="nav-icon">◉</span>Índice</button>
+  <div class="nav-group">Fundamentos</div>
+  <button class="nav-item" onclick="show('quees',this)"><span class="nav-icon">◈</span>Qué es Copilot</button>
+  <button class="nav-item" onclick="show('modelos',this)"><span class="nav-icon">⬡</span>Modelos de IA <span class="nav-badge">TECH</span></button>
+  <button class="nav-item" onclick="show('prompt',this)"><span class="nav-icon">✦</span>El arte del prompt</button>
+  <button class="nav-item" onclick="show('niveles',this)"><span class="nav-icon">▲</span>Niveles de dominio</button>
+  <div class="nav-group">Tutoriales por app</div>
+  <button class="nav-item" onclick="show('word',this)"><span class="nav-icon">W</span>Word — Tutorial</button>
+  <button class="nav-item" onclick="show('excel',this)"><span class="nav-icon">X</span>Excel — Tutorial</button>
+  <button class="nav-item" onclick="show('outlook',this)"><span class="nav-icon">O</span>Outlook — Tutorial</button>
+  <button class="nav-item" onclick="show('ppt',this)"><span class="nav-icon">P</span>PowerPoint</button>
+  <button class="nav-item" onclick="show('teams',this)"><span class="nav-icon">T</span>Teams + Loop</button>
+  <div class="nav-group">Avanzado</div>
+  <button class="nav-item" onclick="show('agentes',this)"><span class="nav-icon">⬡</span>Agentes <span class="nav-badge">PRO</span></button>
+  <button class="nav-item" onclick="show('integraciones',this)"><span class="nav-icon">⟳</span>Integraciones <span class="nav-badge">PRO</span></button>
+  <button class="nav-item" onclick="show('imagenes',this)"><span class="nav-icon">◻</span>Imágenes con IA</button>
+  <button class="nav-item" onclick="show('errores',this)"><span class="nav-icon">⚠</span>Errores comunes</button>
+  <button class="nav-item" onclick="show('biblioteca',this)"><span class="nav-icon">❋</span>Biblioteca prompts</button>
+  <div class="sidebar-footer">
+    <button class="theme-btn" onclick="toggleTheme()"><span class="theme-icon" id="theme-icon">☀</span><span id="theme-label">Modo claro</span></button>
+    <p style="font-size:11px;color:var(--text3);line-height:1.6">Requiere licencia<br><strong style="color:var(--text2)">Microsoft 365 Copilot</strong></p>
+    <p style="margin-top:6px"><strong style="color:var(--text2);font-size:11px">microservei.com</strong></p>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="topbar" id="topbar">
+    <button class="menu-btn" onclick="openSidebar()">☰</button>
+    <img class="ms-logo" id="logo-top" src="logo-dark.png" alt="microservei" style="height:28px">
+    <button class="theme-btn" onclick="toggleTheme()" style="margin:0;padding:6px 10px;width:auto"><span class="theme-icon" id="theme-icon-mobile">☀</span></button>
+  </div>
+
+  <!-- HOME -->
+  <div id="home" class="page active">
+    <div class="home-hero">
+      <div class="home-eyebrow">Microsoft 365 · microservei</div>
+      <h1 class="home-title">Guía definitiva para<br>dominar <span class="hl">Copilot</span></h1>
+      <p class="lead">Todo lo que necesitas para convertirte en profesional del Copilot — desde la arquitectura técnica hasta los últimos modelos GPT 5.x, tutoriales paso a paso, integraciones y agentes.</p>
+      <div class="home-stats">
+        <div class="stat"><div class="stat-n">14</div><div class="stat-l">secciones</div></div>
+        <div class="stat"><div class="stat-n">80+</div><div class="stat-l">prompts reales</div></div>
+        <div class="stat"><div class="stat-n">5</div><div class="stat-l">apps en profundidad</div></div>
+        <div class="stat"><div class="stat-n">GPT-5</div><div class="stat-l">motores IA</div></div>
+      </div>
+    </div>
+    <div class="home-grid">
+      <div class="home-card" onclick="show('modelos',null)"><div class="hc-icon">🧠</div><div class="hc-title">Modelos de IA — GPT 5.x</div><div class="hc-desc">GPT 5.4, 5.3, 5.2, Quick Response vs Think Deeper. Cuándo usar cada modo.</div><div class="hc-arrow">→</div></div>
+      <div class="home-card" onclick="show('prompt',null)"><div class="hc-icon">✦</div><div class="hc-title">El arte del prompt</div><div class="hc-desc">10 principios, fórmula maestra y cómo iterar para resultados perfectos.</div><div class="hc-arrow">→</div></div>
+      <div class="home-card" onclick="show('word',null)"><div class="hc-icon">📝</div><div class="hc-title">Tutorial Word completo</div><div class="hc-desc">Modo borrador, reescritura, revisión inteligente y funciones ocultas.</div><div class="hc-arrow">→</div></div>
+      <div class="home-card" onclick="show('excel',null)"><div class="hc-icon">📊</div><div class="hc-title">Tutorial Excel completo</div><div class="hc-desc">Python + Copilot, fórmulas, dashboards y análisis de negocio avanzado.</div><div class="hc-arrow">→</div></div>
+      <div class="home-card" onclick="show('agentes',null)"><div class="hc-icon">⬡</div><div class="hc-title">Agentes</div><div class="hc-desc">Copilot con misión fija. Crea tu propio agente en Copilot Studio.</div><div class="hc-arrow">→</div></div>
+      <div class="home-card" onclick="show('biblioteca',null)"><div class="hc-icon">❋</div><div class="hc-title">Biblioteca de prompts</div><div class="hc-desc">50+ prompts listos para copiar organizados por situación.</div><div class="hc-arrow">→</div></div>
+    </div>
+    <div class="infobox" style="margin-top:24px">💡 <strong>¿Por dónde empezar?</strong> Si eres nuevo → <strong>Qué es Copilot → Modelos de IA → Prompt</strong>. Si ya lo usas → <strong>Tutoriales Word/Excel/Outlook</strong> o directamente <strong>Agentes</strong>.</div>
+  </div>
+
+  <!-- ÍNDICE -->
+  <div id="indice" class="page">
+    <div class="page-header"><div class="section-chip">📋 Índice</div><h1>Contenido completo</h1><p class="lead">Haz clic en cualquier fila para ir directamente a esa sección.</p></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th>Sección</th><th>Contenido</th><th>Nivel</th></tr></thead>
+      <tbody>
+        <tr onclick="show('quees',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">01</td><td><strong>Qué es Copilot</strong></td><td>Arquitectura, diferencias vs ChatGPT, capacidades reales</td><td><span class="tag t-green">Básico</span></td></tr>
+        <tr onclick="show('modelos',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">02</td><td><strong>Modelos de IA</strong></td><td>GPT 5.4/5.3/5.2, modos Automático/Rápido/Razonamiento profundo</td><td><span class="tag t-cyan">Técnico</span></td></tr>
+        <tr onclick="show('prompt',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">03</td><td><strong>El arte del prompt</strong></td><td>10 principios, fórmula, tono, iteración</td><td><span class="tag t-green">Intermedio</span></td></tr>
+        <tr onclick="show('niveles',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">04</td><td><strong>Niveles de dominio</strong></td><td>5 niveles + plan de 4 semanas</td><td><span class="tag t-green">Intermedio</span></td></tr>
+        <tr onclick="show('word',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">05</td><td><strong>Word — Tutorial</strong></td><td>Borrador, reescritura, revisión, comparación de documentos, atajos</td><td><span class="tag t-amber">Avanzado</span></td></tr>
+        <tr onclick="show('excel',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">06</td><td><strong>Excel — Tutorial</strong></td><td>Python+Copilot, fórmulas, dashboards, detección de errores, previsiones</td><td><span class="tag t-amber">Avanzado</span></td></tr>
+        <tr onclick="show('outlook',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">07</td><td><strong>Outlook — Tutorial</strong></td><td>Resúmenes, borradores, coaching, reglas automáticas, Prioritize inbox</td><td><span class="tag t-amber">Avanzado</span></td></tr>
+        <tr onclick="show('ppt',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">08</td><td><strong>PowerPoint</strong></td><td>Desde archivo Word, slides de impacto, Designer, notas de ponente</td><td><span class="tag t-amber">Avanzado</span></td></tr>
+        <tr onclick="show('teams',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">09</td><td><strong>Teams + Loop</strong></td><td>Resúmenes de reunión, acciones pendientes, Loop colaborativo</td><td><span class="tag t-amber">Avanzado</span></td></tr>
+        <tr onclick="show('agentes',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">10</td><td><strong>Agentes</strong></td><td>Copilot Studio, 4 componentes, 5 tipos de agente con instrucciones</td><td><span class="tag t-purple">PRO</span></td></tr>
+        <tr onclick="show('integraciones',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">11</td><td><strong>Integraciones</strong></td><td>Power Automate, Graph API, CRM Dynamics 365, SharePoint</td><td><span class="tag t-purple">PRO</span></td></tr>
+        <tr onclick="show('imagenes',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">12</td><td><strong>Imágenes con IA</strong></td><td>DALL·E 3, Designer, prompts de imagen, limitaciones</td><td><span class="tag t-cyan">Técnico</span></td></tr>
+        <tr onclick="show('errores',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">13</td><td><strong>Errores comunes</strong></td><td>12 errores, diagnóstico y solución</td><td><span class="tag t-green">Todos</span></td></tr>
+        <tr onclick="show('biblioteca',null)" style="cursor:pointer"><td style="color:var(--accent);font-weight:700">14</td><td><strong>Biblioteca de prompts</strong></td><td>50+ prompts listos por situación</td><td><span class="tag t-green">Todos</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- QUÉ ES -->
+  <div id="quees" class="page">
+    <div class="page-header"><div class="section-chip">01 · Fundamentos</div><h1>Qué es Copilot y cómo funciona</h1><p class="lead">Copilot no es un chatbot externo. Es un modelo de IA integrado en las apps de Microsoft 365, con acceso directo a tu contexto de trabajo.</p></div>
+    <h2>Arquitectura — 3 capas</h2>
+    <div class="steps">
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">1</div><div class="step-body"><div class="step-title">Tu contenido y contexto</div><div class="step-desc">Documento abierto, correos del hilo, celdas seleccionadas. Copilot lee todo antes de responder. Ya sabe de qué va antes de que preguntes.</div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">2</div><div class="step-body"><div class="step-title">Microsoft Graph</div><div class="step-desc">La capa que conecta identidad, archivos, calendario, reuniones y contactos. Puede consultar todo tu ecosistema M365 para dar respuestas coherentes con tu realidad.</div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">3</div><div class="step-body"><div class="step-title">GPT-4o / GPT-5.x (Azure OpenAI)</div><div class="step-desc">El motor que razona, redacta, resume y adapta. Hospedado en Azure con garantías de privacidad corporativa. Tu contenido <strong style="color:var(--green)">no se usa para entrenar el modelo</strong>.</div></div></div>
+      <div class="step-item"><div class="step-dot">4</div><div class="step-body"><div class="step-title">La interfaz de cada app</div><div class="step-desc">Word, Excel, Outlook, Teams, PowerPoint. El resultado aparece directamente en el documento, no en ventana aparte.</div></div></div>
+    </div>
+    <div class="divider"></div>
+    <h2>Copilot vs ChatGPT</h2>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Aspecto</th><th>ChatGPT</th><th>Copilot en M365</th></tr></thead>
+      <tbody>
+        <tr><td>Contexto</td><td>Solo lo que pegas</td><td>Lee tu documento directamente</td></tr>
+        <tr><td>Integración</td><td>Herramienta externa</td><td>Dentro de la app que usas</td></tr>
+        <tr><td>Resultado</td><td>Copias y pegas tú</td><td>Aparece en el documento</td></tr>
+        <tr><td>Acceso a datos</td><td>Solo lo que le das</td><td>Correos, calendar, archivos recientes</td></tr>
+        <tr><td>Privacidad</td><td>Puede usarse para entrenamiento</td><td>Contrato enterprise, datos aislados</td></tr>
+        <tr><td>Modelo</td><td>GPT-4o / o3 / GPT-5</td><td>GPT-5.x via Azure OpenAI</td></tr>
+      </tbody>
+    </table></div>
+    <div class="g2" style="margin-top:16px">
+      <div class="card"><div class="card-title" style="color:var(--green)">✓ Puede hacer bien</div><ul class="checklist"><li><span class="ci ok">✓</span>Resumir y extraer información</li><li><span class="ci ok">✓</span>Redactar, reescribir y cambiar tono</li><li><span class="ci ok">✓</span>Analizar datos y sacar conclusiones</li><li><span class="ci ok">✓</span>Generar fórmulas de Excel complejas</li><li><span class="ci ok">✓</span>Crear borradores de presentaciones</li><li><span class="ci ok">✓</span>Simular perspectivas (cliente, gerente)</li><li><span class="ci ok">✓</span>Generar imágenes con DALL·E 3</li><li><span class="ci ok">✓</span>Transcribir y resumir reuniones</li></ul></div>
+      <div class="card"><div class="card-title" style="color:var(--red)">✗ Limitaciones</div><ul class="checklist"><li><span class="ci no">✗</span>No verifica hechos (puede alucinar)</li><li><span class="ci no">✗</span>Sin internet en Word/Excel/Outlook</li><li><span class="ci no">✗</span>No recuerda conversaciones anteriores</li><li><span class="ci no">✗</span>Diseño visual limitado en PPT</li><li><span class="ci no">✗</span>Datos numéricos requieren verificación</li><li><span class="ci no">✗</span>Requiere archivos en OneDrive/SharePoint</li></ul></div>
+    </div>
+  </div>
+
+  <!-- MODELOS DE IA — EXPANDIDO CON GPT 5.x -->
+  <div id="modelos" class="page">
+    <div class="page-header"><div class="section-chip">02 · Técnico</div><h1>Modelos de IA en Copilot</h1><p class="lead">Desde 2025, Copilot permite elegir el modelo y el modo de razonamiento. Entender cuándo usar cada uno puede marcar la diferencia entre una respuesta mediocre y una excepcional.</p></div>
+
+    <h2>Los 3 modos de razonamiento</h2>
+    <p>Al hacer clic en el selector de modelo (botón "Automático" en la esquina superior derecha de Copilot), aparecen estos tres modos:</p>
+
+    <div class="mode-card">
+      <div class="mode-badge" style="background:var(--accent-glow);color:var(--accent)">⚡ Automático</div>
+      <div class="mode-content">
+        <div class="mode-name">Automático</div>
+        <div class="mode-desc">Copilot decide por sí mismo cuánto tiempo dedicar a pensar según la complejidad de la pregunta. Para preguntas simples responde al instante; para preguntas complejas activa razonamiento más profundo.</div>
+        <div class="mode-use">📌 Recomendado para uso general. Ideal si no sabes qué modo elegir.</div>
+      </div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-badge" style="background:var(--green-bg);color:var(--green)">▶ Rápido</div>
+      <div class="mode-content">
+        <div class="mode-name">Respuesta rápida</div>
+        <div class="mode-desc">Prioriza la velocidad sobre la profundidad. Respuestas inmediatas, sin tiempo de "pensar". Ideal para tareas donde la agilidad importa más que la exhaustividad.</div>
+        <div class="mode-use">📌 Úsalo para: correos simples, resúmenes rápidos, respuestas cortas, reformulaciones de texto, traducciones.</div>
+      </div>
+    </div>
+    <div class="mode-card">
+      <div class="mode-badge" style="background:var(--purple-dim);color:#a78bfa">🧠 Profundo</div>
+      <div class="mode-content">
+        <div class="mode-name">Razonamiento profundo</div>
+        <div class="mode-desc">Copilot "piensa" antes de responder — como un modelo de cadena de pensamiento (chain-of-thought). Analiza el problema desde múltiples ángulos, verifica su propio razonamiento y da respuestas más elaboradas y fiables. Tarda más, pero el resultado es notablemente mejor en tareas complejas.</div>
+        <div class="mode-use">📌 Úsalo para: análisis estratégicos, decisiones complejas, argumentarios avanzados, detección de errores en datos, código complejo, documentos legales o técnicos.</div>
+      </div>
+    </div>
+
+    <div class="infobox">💡 <strong>Regla práctica:</strong> usa <em>Respuesta rápida</em> para el 70% del trabajo diario (correos, resúmenes, reformulaciones). Reserva <em>Razonamiento profundo</em> para el 30% que requiere análisis real — verás una diferencia significativa.</div>
+
+    <div class="divider"></div>
+    <h2>Los modelos GPT disponibles</h2>
+    <p>Dentro del selector también aparece la sección <strong>GPT — Open AI</strong> con los modelos específicos. Estos son los que están actualmente disponibles:</p>
+
+    <div class="model-card">
+      <div class="model-header">
+        <div class="model-logo" style="background:rgba(34,239,224,.15);color:var(--accent)">5.4</div>
+        <div><div class="model-name">GPT 5.4 Think Deeper</div><div class="model-version">OpenAI · Razonamiento profundo · Modelo más avanzado disponible</div></div>
+        <span class="tag t-purple" style="margin-left:auto">Más potente</span>
+      </div>
+      <div class="model-body">
+        <p>El modelo más capaz del selector. Combina la arquitectura GPT-5 con el modo de razonamiento extendido (Think Deeper). Antes de responder realiza un proceso interno de verificación y análisis — visible como "pensando..." en la interfaz. Produce respuestas notablemente más matizadas, coherentes y difíciles de mejorar.</p>
+        <p><strong style="color:var(--text)">Cuándo usarlo:</strong> Análisis estratégicos, elaboración de propuestas complejas, revisión de contratos, código avanzado, argumentarios de negociación, cualquier tarea donde el primer intento debe ser muy bueno.</p>
+        <div class="model-features"><span class="tag t-purple">Razonamiento extendido</span><span class="tag t-cyan">Máxima calidad</span><span class="tag t-amber">Más lento (~15–30s)</span><span class="tag t-gray">GPT-5 base</span></div>
+      </div>
+    </div>
+
+    <div class="model-card">
+      <div class="model-header">
+        <div class="model-logo" style="background:rgba(34,239,224,.12);color:var(--accent)">5.3</div>
+        <div><div class="model-name">GPT 5.3 Quick Response</div><div class="model-version">OpenAI · Respuesta inmediata · Velocidad + Calidad GPT-5</div></div>
+        <span class="tag t-cyan" style="margin-left:auto">Recomendado diario</span>
+      </div>
+      <div class="model-body">
+        <p>La versión de GPT-5 optimizada para velocidad. Mantiene la calidad del modelo GPT-5 pero sin el tiempo de razonamiento extendido. Respuestas en 2–5 segundos con una calidad notablemente superior a GPT-4o. El equilibrio ideal para el trabajo profesional del día a día.</p>
+        <p><strong style="color:var(--text)">Cuándo usarlo:</strong> Todo el trabajo habitual — correos, resúmenes, reescrituras, análisis de Excel, respuestas a clientes. La diferencia respecto a GPT-4o es perceptible en matices de tono y precisión.</p>
+        <div class="model-features"><span class="tag t-cyan">Respuesta rápida</span><span class="tag t-green">Alta calidad GPT-5</span><span class="tag t-gray">2–5 segundos</span><span class="tag t-green">Uso general</span></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div class="model-card" style="margin-bottom:0">
+        <div class="model-header">
+          <div class="model-logo" style="background:rgba(245,158,11,.12);color:var(--amber)">5.2</div>
+          <div><div class="model-name">GPT 5.2 Think Deeper</div><div class="model-version">OpenAI · Razonamiento extendido</div></div>
+        </div>
+        <div class="model-body">
+          <p>Versión anterior de GPT-5 con razonamiento profundo. Buena alternativa cuando 5.4 está saturado o lento. La diferencia con 5.4 en tareas profesionales es pequeña.</p>
+          <div class="model-features"><span class="tag t-purple">Think Deeper</span><span class="tag t-amber">GPT 5.2</span></div>
+        </div>
+      </div>
+      <div class="model-card" style="margin-bottom:0">
+        <div class="model-header">
+          <div class="model-logo" style="background:rgba(245,158,11,.10);color:var(--amber)">5.2</div>
+          <div><div class="model-name">GPT 5.2 Quick Response</div><div class="model-version">OpenAI · Respuesta rápida</div></div>
+        </div>
+        <div class="model-body">
+          <p>Versión anterior de GPT-5 con velocidad. Útil como fallback cuando 5.3 no está disponible. Ofrece buena calidad con tiempos de respuesta cortos.</p>
+          <div class="model-features"><span class="tag t-green">Rápido</span><span class="tag t-amber">GPT 5.2</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h2>Guía práctica: ¿qué modelo elegir?</h2>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Tarea</th><th>Modelo recomendado</th><th>Por qué</th></tr></thead>
+      <tbody>
+        <tr><td>Correo rápido al cliente</td><td><span class="tag t-cyan">5.3 Quick Response</span></td><td>Suficiente calidad, sin espera</td></tr>
+        <tr><td>Propuesta comercial compleja</td><td><span class="tag t-purple">5.4 Think Deeper</span></td><td>Necesitas el mejor primer borrador</td></tr>
+        <tr><td>Resumen de documento largo</td><td><span class="tag t-cyan">5.3 Quick Response</span></td><td>Rápido y eficaz para síntesis</td></tr>
+        <tr><td>Análisis estratégico</td><td><span class="tag t-purple">5.4 Think Deeper</span></td><td>Razonamiento multicapa necesario</td></tr>
+        <tr><td>Fórmula de Excel</td><td><span class="tag t-cyan">5.3 o Automático</span></td><td>GPT-5 base resuelve bien fórmulas</td></tr>
+        <tr><td>Revisión de contrato</td><td><span class="tag t-purple">5.4 Think Deeper</span></td><td>Detecta ambigüedades mejor</td></tr>
+        <tr><td>Argumentario de ventas</td><td><span class="tag t-purple">5.4 Think Deeper</span></td><td>Matices y perspectiva del cliente</td></tr>
+        <tr><td>Responder tickets de soporte</td><td><span class="tag t-cyan">5.3 Quick Response</span></td><td>Velocidad + calidad suficiente</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="divider"></div>
+    <h2>¿Puede usarse Claude o Gemini?</h2>
+    <div class="infobox">🔍 <strong>Respuesta corta:</strong> No directamente en las apps de M365. El selector de Copilot solo muestra modelos GPT de OpenAI. Claude y Gemini son alternativas externas.</div>
+    <div class="g2">
+      <div class="model-card" style="margin-bottom:0">
+        <div class="model-header"><div class="model-logo" style="background:rgba(239,68,68,.12);color:#f87171">A</div><div><div class="model-name">Claude (Anthropic)</div><div class="model-version">Disponible via Azure AI Studio</div></div></div>
+        <div class="model-body"><p>No en el selector nativo de Copilot. Puede integrarse en agentes personalizados via Azure AI Studio. Destaca en redacción larga y seguimiento de instrucciones complejas.</p><div class="model-features"><span class="tag t-green">Texto largo</span><span class="tag t-amber">Via Azure AI</span><span class="tag t-red">No en M365 nativo</span></div></div>
+      </div>
+      <div class="model-card" style="margin-bottom:0">
+        <div class="model-header"><div class="model-logo" style="background:rgba(245,158,11,.12);color:var(--amber)">G</div><div><div class="model-name">Gemini (Google)</div><div class="model-version">Google Workspace únicamente</div></div></div>
+        <div class="model-body"><p>El equivalente de Copilot en Google Workspace (Docs, Sheets, Gmail). No está integrado en M365. Alternativa válida si tu empresa usa Google.</p><div class="model-features"><span class="tag t-amber">Google Workspace</span><span class="tag t-red">No en M365</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMPT -->
+  <div id="prompt" class="page">
+    <div class="page-header"><div class="section-chip">03 · Fundamentos</div><h1>El arte del prompt</h1><p class="lead">La calidad del resultado depende casi al 100% de cómo formulas lo que pides. Esta es la habilidad más importante.</p></div>
+    <div class="formula"><div class="formula-lbl">La fórmula maestra</div><div class="formula-main">Rol + Tarea + Contexto + Destinatario + Tono + Formato + Longitud</div><div class="formula-ex">Los más importantes: Tarea + Contexto + Tono. Cuantos más incluyas, mejor.</div></div>
+    <h2>Los 10 principios</h2>
+    <div class="steps">
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">1</div><div class="step-body"><div class="step-title">Asigna un rol antes de la tarea</div><div class="step-desc">Empieza con "Actúa como…". Calibra vocabulario y profundidad antes de que empiece.</div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">2</div><div class="step-body"><div class="step-title">Describe al destinatario con detalle</div><div class="step-desc">"Director financiero de pyme sin IT que ya sufrió pérdida de datos" es muy diferente a "un cliente".</div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">3</div><div class="step-body"><div class="step-title">Declara el objetivo real</div><div class="step-desc">No "escribe un correo" sino "escribe un correo cuyo objetivo es que apruebe antes del viernes sin sentirse presionado".</div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">4</div><div class="step-body"><div class="step-title">Especifica el tono con precisión</div><div class="step-desc">Diferencia entre "profesional", "firme sin ser agresivo", "urgente sin alarmismo", "empático pero claro".</div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">5</div><div class="step-body"><div class="step-title">Define el formato de salida</div><div class="step-desc">Lista, párrafos, tabla, email, FAQ, resumen ejecutivo. Si no lo dices, Copilot elige por ti.</div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">6</div><div class="step-body"><div class="step-title">Limita la longitud siempre</div><div class="step-desc">"En 3 párrafos", "máximo 100 palabras", "5 puntos". Copilot se extiende sin límite.</div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">7</div><div class="step-body"><div class="step-title">Da ejemplos de lo que quieres</div><div class="step-desc">"Quiero algo como: [ejemplo]. Evita este estilo: [contraejemplo]". Los ejemplos guían mejor que las descripciones.</div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">8</div><div class="step-body"><div class="step-title">Dile qué evitar explícitamente</div><div class="step-desc">"Sin tecnicismos", "sin saludos formales", "no uses la palabra solución". Tan útil como decirle qué incluir.</div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">9</div><div class="step-body"><div class="step-title">Itera — no lo trates como oráculo</div><div class="step-desc">El primer resultado es un borrador. Después: "hazlo más corto", "el tono es demasiado formal", "añade urgencia".</div></div></div>
+      <div class="step-item"><div class="step-dot">10</div><div class="step-body"><div class="step-title">Elige el modelo correcto para la tarea</div><div class="step-desc">Para tareas complejas activa GPT 5.4 Think Deeper antes de escribir el prompt. El modelo condiciona la calidad tanto como el propio prompt.</div></div></div>
+    </div>
+    <div class="divider"></div>
+    <h2>Prompt perfecto — ejemplo completo</h2>
+    <div class="prompt" id="pp1">Actúa como consultor de ciberseguridad especializado en pymes.
+
+Tengo un cliente (empresa de 15 personas, sector legal, sin IT interno) 
+que acaba de recibir un correo de phishing. No hizo clic, pero está asustado.
+
+Escribe un correo de respuesta que:
+- Le tranquilice sin minimizar el riesgo real
+- Explique en 2 frases qué es el phishing (sin tecnicismos)
+- Proponga una reunión de revisión de seguridad como siguiente paso
+- Cierre transmitiendo confianza en nosotros como proveedor
+
+Tono: profesional, cercano, sin alarmismo.
+Longitud: máximo 150 palabras.
+No uses la palabra "incidente".<button class="copy-btn" onclick="copyPrompt('pp1')">⎘ Copiar</button></div>
+    <div class="successbox">Este prompt tiene: rol, contexto, objetivo estructurado, tono, límite de longitud y restricción explícita. Resultado: un correo listo para enviar.</div>
+  </div>
+
+  <!-- NIVELES -->
+  <div id="niveles" class="page">
+    <div class="page-header"><div class="section-chip">04 · Fundamentos</div><h1>Los 5 niveles de dominio</h1><p class="lead">El salto entre niveles es mental, no técnico. Todo depende de cómo piensas cuando usas Copilot.</p></div>
+    <div class="level-item"><div class="level-bar" style="background:var(--text3)"></div><div class="level-body"><div class="level-name">Nivel 1 — Reactivo</div><div class="level-desc">Prompts de una palabra. Resultados genéricos. La mayoría vive aquí.</div><div class="level-ex">"Escribe un correo" / "Resúmeme esto"</div></div></div>
+    <div class="level-item"><div class="level-bar" style="background:var(--accent)"></div><div class="level-body"><div class="level-name">Nivel 2 — Consciente</div><div class="level-desc">Añade destinatario, tono y longitud. Pide iteraciones. Los textos dejan de ser genéricos.</div><div class="level-ex">"Escribe un correo para un cliente que valora no renovar, tono profesional, 5 líneas"</div></div></div>
+    <div class="level-item"><div class="level-bar" style="background:var(--green)"></div><div class="level-body"><div class="level-name">Nivel 3 — Avanzado</div><div class="level-desc">De "haz esto" a "piensa como". Asigna roles, da perspectivas. Resultados cualitativamente diferentes.</div><div class="level-ex">"Analiza este correo como si fueras el director financiero del cliente. ¿Qué le preocupa de verdad?"</div></div></div>
+    <div class="level-item"><div class="level-bar" style="background:var(--amber)"></div><div class="level-body"><div class="level-name">Nivel 4 — Profesional</div><div class="level-desc">Prompts guardados y reutilizables. Usa Copilot para decidir, no solo para escribir. Elige el modelo correcto para cada tarea.</div><div class="level-ex">"Actúa como consultor IT/MSP [GPT 5.4 Think Deeper]. Analiza: 1) preocupación real, 2) riesgo no visto, 3) respuesta, 4) objeciones."</div></div></div>
+    <div class="level-item"><div class="level-bar" style="background:#e879f9"></div><div class="level-body"><div class="level-name">Nivel 5 — Experto sistémico</div><div class="level-desc">Sistema propio. Agentes configurados. Usa Copilot antes de pensar él solo. Combina modelos según la tarea.</div><div class="level-ex">"Reunión en 20 min. [5.4 Think Deeper] Dame: briefing, 3 objeciones, argumento de cierre, siguiente paso."</div></div></div>
+    <div class="divider"></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Semana</th><th>Ejercicio</th><th>Objetivo</th></tr></thead><tbody>
+      <tr><td><strong style="color:var(--accent)">Semana 1</strong></td><td>Añade tono y longitud a todos tus prompts</td><td>Eliminar respuestas genéricas</td></tr>
+      <tr><td><strong style="color:var(--accent)">Semana 2</strong></td><td>Empieza con "Actúa como…" siempre</td><td>Activar perspectiva de rol</td></tr>
+      <tr><td><strong style="color:var(--accent)">Semana 3</strong></td><td>Prueba GPT 5.4 Think Deeper en una tarea compleja</td><td>Descubrir la diferencia de calidad</td></tr>
+      <tr><td><strong style="color:var(--accent)">Semana 4</strong></td><td>Guarda tus 5 mejores prompts y reutilízalos</td><td>Construir biblioteca personal</td></tr>
+    </tbody></table></div>
+  </div>
+
+  <!-- WORD TUTORIAL — EXPANDIDO -->
+  <div id="word" class="page">
+    <div class="page-header"><div class="section-chip">05 · Tutorial completo</div>
+      <div class="app-hdr"><div class="app-emoji" style="background:rgba(0,120,212,.15)">📝</div><div><div class="app-name">Copilot en Word</div><div class="app-sub">Tutorial profesional paso a paso</div></div></div>
+      <p class="lead">Word es donde Copilot tiene el mayor impacto en productividad diaria. Aprende no solo a usarlo, sino a sacarle el máximo en cada escenario posible.</p>
+    </div>
+
+    <h2>Activación y puntos de acceso</h2>
+    <div class="tutorial-steps">
+      <div class="tut-step"><div class="tut-num">1</div><div class="tut-body"><div class="tut-title">Requisito: archivo en OneDrive o SharePoint</div><div class="tut-desc">Copilot no funciona en archivos guardados localmente. El documento debe estar en la nube. Guarda con <strong>Archivo → Guardar en OneDrive</strong> o arrastra el archivo a tu carpeta de OneDrive. Verás el icono de nube en la barra de título cuando esté listo.</div></div></div>
+      <div class="tut-step"><div class="tut-num">2</div><div class="tut-body"><div class="tut-title">Panel lateral — para preguntas y análisis</div><div class="tut-desc">Clic en el botón <strong>Copilot en la cinta Inicio</strong> → se abre un panel a la derecha. Desde aquí puedes preguntar sobre todo el documento: "¿Cuál es la fecha límite mencionada?", "Resume el documento en 3 puntos", "¿Qué compromisos toma cada parte?", "¿Hay contradicciones en el texto?". Copilot lee el documento completo.</div></div></div>
+      <div class="tut-step"><div class="tut-num">3</div><div class="tut-body"><div class="tut-title">Menú flotante — para transformar texto seleccionado</div><div class="tut-desc">Selecciona cualquier texto → aparece el menú flotante de Copilot con opciones predefinidas: <strong>Reescribir, Cambiar tono, Acortar, Ampliar</strong>. O escribe tu propia instrucción personalizada. Esta es la función más poderosa: transforma texto existente directamente en el documento sin copiar y pegar.</div></div></div>
+      <div class="tut-step"><div class="tut-num">4</div><div class="tut-body"><div class="tut-title">Icono flotante — para generar contenido nuevo</div><div class="tut-desc">Haz clic en una <strong>línea vacía</strong> → aparece el icono de Copilot en el margen izquierdo. Haz clic sobre él → escribe tu instrucción → Copilot genera texto directamente en ese punto del documento. Perfecto para añadir secciones nuevas sin cambiar de ventana.</div></div></div>
+      <div class="tut-step"><div class="tut-num">5</div><div class="tut-body"><div class="tut-title">Crear borrador completo desde cero</div><div class="tut-desc">Al crear un documento nuevo o en blanco, Copilot puede generar el borrador completo. Haz clic en "Borrador con Copilot" que aparece en el documento vacío. Escribe una descripción del documento que necesitas — cuanto más detallada, mejor. Copilot genera estructura, secciones y contenido inicial.</div></div></div>
+    </div>
+
+    <div class="divider"></div>
+    <h2>Funcionalidades avanzadas de Word + Copilot</h2>
+
+    <div class="expand-section" id="exp-word1">
+      <div class="expand-header" onclick="toggleExpand('exp-word1')">
+        <span class="expand-title">🔄 Comparar y combinar documentos</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <p>Copilot puede comparar el documento actual con otro de tu OneDrive. Útil para ver diferencias entre versiones de contratos, propuestas o informes.</p>
+        <div class="prompt" id="wc1">Compara este documento con [nombre del otro documento en OneDrive].
+Dime: qué se añadió, qué se eliminó y qué cambió de forma significativa.
+Muéstralo como una lista organizada por sección.<button class="copy-btn" onclick="copyPrompt('wc1')">⎘ Copiar</button></div>
+      </div>
+    </div>
+
+    <div class="expand-section" id="exp-word2">
+      <div class="expand-header" onclick="toggleExpand('exp-word2')">
+        <span class="expand-title">📋 Generar tablas y listas estructuradas</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <p>Copilot puede extraer información del texto y convertirla en tablas o listas organizadas — mucho más rápido que hacerlo manualmente.</p>
+        <div class="prompt" id="wc2">Extrae todas las tareas o acciones mencionadas en este documento.
+Organízalas en una tabla con columnas: Tarea / Responsable / Fecha límite / Estado.
+Si no se menciona algún campo, déjalo vacío.<button class="copy-btn" onclick="copyPrompt('wc2')">⎘ Copiar</button></div>
+      </div>
+    </div>
+
+    <div class="expand-section" id="exp-word3">
+      <div class="expand-header" onclick="toggleExpand('exp-word3')">
+        <span class="expand-title">⚖️ Revisión legal y de riesgo</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <p>Para propuestas, contratos y documentos que van a ser firmados, Copilot puede hacer una primera revisión de riesgo.</p>
+        <div class="prompt" id="wc3">Actúa como asesor legal corporativo. Revisa este documento y señala:
+1) Cláusulas ambiguas o que puedan interpretarse de dos formas
+2) Obligaciones que nuestra empresa asume y que podrían ser problemáticas
+3) Términos que deberían negociarse antes de firmar
+4) Lo que falta y debería estar incluido
+No reescribas — solo dame el análisis con referencias al texto.<button class="copy-btn" onclick="copyPrompt('wc3')">⎘ Copiar</button></div>
+      </div>
+    </div>
+
+    <div class="expand-section" id="exp-word4">
+      <div class="expand-header" onclick="toggleExpand('exp-word4')">
+        <span class="expand-title">🎯 Plantillas y documentos tipo</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <p>Copilot puede generar plantillas reutilizables con instrucciones integradas para personalizar fácilmente.</p>
+        <div class="prompt" id="wc4">Crea una plantilla de propuesta comercial para servicios IT a pymes.
+Secciones: portada, resumen ejecutivo, diagnóstico del cliente, 
+solución propuesta, inversión, garantías, próximos pasos.
+Entre corchetes, incluye instrucciones sobre qué personalizar en cada sección.
+El tono debe ser profesional pero cercano.<button class="copy-btn" onclick="copyPrompt('wc4')">⎘ Copiar</button></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h2>Prompts esenciales para Word</h2>
+    <h3>Reescritura y tono</h3>
+    <div class="prompt" id="w1">Reescribe este párrafo para que lo entienda un director de empresa no técnico.
+Debe sonar confiado y directo, sin tecnicismos, en máximo 3 frases.<button class="copy-btn" onclick="copyPrompt('w1')">⎘ Copiar</button></div>
+    <div class="prompt" id="w2">Haz este texto más conciso. Elimina todo relleno y redundancias.
+Mantén todos los puntos de valor.
+Resultado en máximo el 60% de palabras del original.<button class="copy-btn" onclick="copyPrompt('w2')">⎘ Copiar</button></div>
+    <h3>Resúmenes ejecutivos</h3>
+    <div class="prompt" id="w3">Resume este documento en un resumen ejecutivo de máximo media página.
+Estructura: 1) Situación actual  2) Problema clave  3) Solución propuesta  4) Próximos pasos
+Tono: lenguaje de negocio, sin tecnicismos.<button class="copy-btn" onclick="copyPrompt('w3')">⎘ Copiar</button></div>
+    <h3>Doble versión: técnica y ejecutiva</h3>
+    <div class="prompt" id="w5">Crea dos versiones de este documento:
+1. Versión técnica: para el equipo IT, con todos los detalles técnicos
+2. Versión ejecutiva: para dirección, solo impacto en negocio y decisiones necesarias
+Máximo 1 página cada una.<button class="copy-btn" onclick="copyPrompt('w5')">⎘ Copiar</button></div>
+    <h3>Crítica desde el punto de vista del cliente</h3>
+    <div class="prompt" id="w4">Actúa como el cliente que recibirá esta propuesta.
+1) ¿Qué te convence?
+2) ¿Qué te genera dudas o desconfianza?
+3) ¿Qué echas en falta para tomar la decisión?
+4) ¿En qué punto abandonarías la lectura?
+No reescribas — solo dame el análisis crítico honesto.<button class="copy-btn" onclick="copyPrompt('w4')">⎘ Copiar</button></div>
+
+    <div class="divider"></div>
+    <h2>Atajos y acciones rápidas en Word</h2>
+    <div class="card">
+      <div class="shortcut-row"><span style="font-size:13px;color:var(--text2)">Abrir panel Copilot</span><span class="shortcut-key">Alt + I</span></div>
+      <div class="shortcut-row"><span style="font-size:13px;color:var(--text2)">Reescribir texto seleccionado</span><span style="font-size:12px;color:var(--text3)">Seleccionar → icono Copilot → Reescribir</span></div>
+      <div class="shortcut-row"><span style="font-size:13px;color:var(--text2)">Generar en línea vacía</span><span style="font-size:12px;color:var(--text3)">Clic en línea vacía → icono margen izquierdo</span></div>
+      <div class="shortcut-row"><span style="font-size:13px;color:var(--text2)">Preguntar sobre el documento</span><span style="font-size:12px;color:var(--text3)">Panel lateral → campo de texto</span></div>
+      <div class="shortcut-row"><span style="font-size:13px;color:var(--text2)">Crear borrador nuevo</span><span style="font-size:12px;color:var(--text3)">Documento vacío → "Borrador con Copilot"</span></div>
+    </div>
+    <div class="warnbox">⚠️ Copilot en Word no lee imágenes dentro del documento. Si tienes tablas o gráficos como imagen, conviértelas primero a texto o tabla real.</div>
+  </div>
+
+  <!-- EXCEL TUTORIAL — EXPANDIDO -->
+  <div id="excel" class="page">
+    <div class="page-header"><div class="section-chip">06 · Tutorial completo</div>
+      <div class="app-hdr"><div class="app-emoji" style="background:rgba(16,124,16,.15)">📊</div><div><div class="app-name">Copilot en Excel</div><div class="app-sub">Tutorial profesional paso a paso</div></div></div>
+      <p class="lead">Copilot en Excel no es solo una calculadora. Es un analista que lee tus datos, detecta patrones, genera código Python y te dice qué significan los números.</p>
+    </div>
+
+    <h2>Activación y requisitos técnicos</h2>
+    <div class="tutorial-steps">
+      <div class="tut-step"><div class="tut-num">1</div><div class="tut-body"><div class="tut-title">Requisito crítico: formato Tabla oficial</div><div class="tut-desc">Copilot funciona <strong>solo</strong> con datos en formato Tabla de Excel. Sin esto, el botón Copilot aparece en gris o con funcionalidades muy limitadas.<br><br><strong>Cómo hacerlo:</strong> Selecciona tus datos (incluye encabezados) → <code style="background:var(--bg4);padding:2px 6px;border-radius:4px;font-size:11px">Insertar → Tabla</code> → activa "La tabla tiene encabezados" → Aceptar. La tabla tendrá bandas de color alternadas. Cada columna debe tener nombre descriptivo en el encabezado.</div></div></div>
+      <div class="tut-step"><div class="tut-num">2</div><div class="tut-body"><div class="tut-title">Archivo en OneDrive o SharePoint</div><div class="tut-desc">Igual que en Word, el archivo debe estar en la nube. Archivos en escritorio o disco local no tienen acceso a Copilot. Guarda con Ctrl+S y confirma que el icono de la barra de título muestra sincronización con OneDrive.</div></div></div>
+      <div class="tut-step"><div class="tut-num">3</div><div class="tut-body"><div class="tut-title">Abre el panel Copilot</div><div class="tut-desc">Pestaña <strong>Inicio → botón Copilot</strong>. El panel se abre a la derecha. Copilot ya "ve" la hoja activa completa — no hace falta seleccionar nada. Verás sugerencias predefinidas como "Mostrar información", "Resaltar" o "Filtrar".</div></div></div>
+      <div class="tut-step"><div class="tut-num">4</div><div class="tut-body"><div class="tut-title">Aplica cambios directamente con un clic</div><div class="tut-desc">Cuando Copilot propone una fórmula, columna calculada o gráfico, aparece un botón de inserción directo. Haz clic en <strong>"Insertar columna"</strong> o <strong>"Insertar gráfico"</strong> y el cambio se aplica en el libro sin necesidad de copiar y pegar nada.</div></div></div>
+    </div>
+
+    <div class="divider"></div>
+    <h2>Funcionalidades avanzadas</h2>
+
+    <div class="expand-section" id="exp-excel1">
+      <div class="expand-header" onclick="toggleExpand('exp-excel1')">
+        <span class="expand-title">🐍 Python en Excel + Copilot</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <p>Microsoft integró Python en Excel (disponible con M365 Copilot). Copilot puede generar y ejecutar código Python directamente en celdas — sin que necesites saber programar — para análisis estadísticos, visualizaciones avanzadas y modelos de datos que van más allá de las fórmulas estándar.</p>
+        <div class="prompt" id="xc1">Genera un análisis de correlación entre las columnas [Ventas] y [Inversión en Marketing] 
+usando Python en Excel.
+Muestra el resultado como un gráfico de dispersión con línea de tendencia.
+Incluye el coeficiente de correlación en el título del gráfico.<button class="copy-btn" onclick="copyPrompt('xc1')">⎘ Copiar</button></div>
+        <div class="tip-block">💡 <strong>Activa Python en Excel:</strong> Fórmulas → Insertar Python (PY). Disponible en Microsoft 365 Insider y Channel mensual de empresas.</div>
+      </div>
+    </div>
+
+    <div class="expand-section" id="exp-excel2">
+      <div class="expand-header" onclick="toggleExpand('exp-excel2')">
+        <span class="expand-title">📈 Dashboards automáticos</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <p>Copilot puede crear un dashboard completo a partir de tus datos brutos — sugiriendo qué gráficos son más adecuados, creando tablas dinámicas y añadiendo KPIs clave.</p>
+        <div class="prompt" id="xc2">Con los datos de esta tabla, crea un dashboard de seguimiento mensual.
+Incluye:
+- Gráfico de líneas de la evolución mensual de [métrica principal]
+- Tabla dinámica por [categoría/zona/producto]
+- Tarjeta de KPI con total del período y variación respecto al anterior
+Etiqueta cada elemento claramente.<button class="copy-btn" onclick="copyPrompt('xc2')">⎘ Copiar</button></div>
+      </div>
+    </div>
+
+    <div class="expand-section" id="exp-excel3">
+      <div class="expand-header" onclick="toggleExpand('exp-excel3')">
+        <span class="expand-title">🔮 Previsiones y proyecciones</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <div class="prompt" id="xc3">Con los datos de los últimos 18 meses, genera una previsión para los próximos 6.
+Usa el método de suavización exponencial o el que consideres más adecuado.
+Muéstralo en tabla con columnas: Mes / Previsión / Rango mínimo / Rango máximo.
+Indica el nivel de confianza y qué factores externos podrían alterar la previsión.<button class="copy-btn" onclick="copyPrompt('xc3')">⎘ Copiar</button></div>
+      </div>
+    </div>
+
+    <div class="expand-section" id="exp-excel4">
+      <div class="expand-header" onclick="toggleExpand('exp-excel4')">
+        <span class="expand-title">🔍 Auditoría y limpieza de datos</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <p>Antes de analizar, es fundamental que los datos estén limpios. Copilot puede detectar y corregir problemas de calidad de datos.</p>
+        <div class="prompt" id="xc4">Audita esta tabla de datos y:
+1) Detecta valores atípicos o fuera de rango (justifica por qué los consideras atípicos)
+2) Identifica celdas vacías donde debería haber datos obligatorios
+3) Encuentra duplicados exactos o parciales (mismo cliente, diferente formato)
+4) Señala inconsistencias de formato (fechas mezcladas, números como texto)
+5) Genera un informe de calidad de datos con puntuación global (0-100)<button class="copy-btn" onclick="copyPrompt('xc4')">⎘ Copiar</button></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h2>Prompts de análisis de negocio</h2>
+    <div class="prompt" id="x1">Analiza esta tabla de ventas mensuales por zona.
+Dame:
+1) Qué zona tiene el mejor rendimiento y por qué
+2) Qué tendencia ves a 6 meses
+3) Qué anomalías o datos inusuales detectas
+4) Qué decisión tomarías si fueras el director comercial<button class="copy-btn" onclick="copyPrompt('x1')">⎘ Copiar</button></div>
+    <div class="prompt" id="x2">Necesito una fórmula que: busque el nombre del cliente en columna A,
+encuentre todas sus compras en la hoja "Ventas", 
+sume solo las del último trimestre, 
+y muestre 0 si no hay ninguna.<button class="copy-btn" onclick="copyPrompt('x2')">⎘ Copiar</button></div>
+    <div class="prompt" id="x4">Con estos datos, escribe un resumen ejecutivo de 5 líneas para el CEO.
+Incluye: el dato más positivo, el principal problema 
+y la recomendación más urgente.
+Sin tecnicismos, lenguaje de negocio.<button class="copy-btn" onclick="copyPrompt('x4')">⎘ Copiar</button></div>
+    <div class="infobox">💡 Para datasets grandes (+10.000 filas), aplica filtros primero o trabaja por tramos. Copilot da mejores resultados con datos acotados y bien estructurados.</div>
+  </div>
+
+  <!-- OUTLOOK TUTORIAL — EXPANDIDO -->
+  <div id="outlook" class="page">
+    <div class="page-header"><div class="section-chip">07 · Tutorial completo</div>
+      <div class="app-hdr"><div class="app-emoji" style="background:rgba(0,114,198,.15)">📧</div><div><div class="app-name">Copilot en Outlook</div><div class="app-sub">Tutorial profesional paso a paso</div></div></div>
+      <p class="lead">Outlook es donde Copilot ahorra más tiempo en el trabajo diario. Un profesional que domina Copilot en Outlook recupera entre 1 y 2 horas al día.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="metric-n">2–4h</div><div class="metric-l">en email al día</div></div>
+      <div class="metric"><div class="metric-n">50%</div><div class="metric-l">reducción posible</div></div>
+      <div class="metric"><div class="metric-n">30s</div><div class="metric-l">vs 10 min redactar</div></div>
+    </div>
+
+    <h2>Activación y funcionalidades principales</h2>
+    <div class="tutorial-steps">
+      <div class="tut-step"><div class="tut-num">1</div><div class="tut-body"><div class="tut-title">Usa New Outlook (nuevo Outlook)</div><div class="tut-desc">Las funcionalidades de Copilot están disponibles principalmente en el <strong>nuevo Outlook</strong> (New Outlook). Si usas el clásico, algunas funciones no aparecen. Activa New Outlook desde el interruptor superior derecho de Outlook clásico → "Probar nuevo Outlook".</div></div></div>
+      <div class="tut-step"><div class="tut-num">2</div><div class="tut-body"><div class="tut-title">Resumen de hilo — un clic</div><div class="tut-desc">Abre cualquier hilo con varios mensajes. En la parte superior verás el botón <strong>"Resumir por Copilot"</strong> (o "Summary by Copilot"). Haz clic y en 5 segundos obtienes: quién dijo qué, qué está decidido, qué está pendiente y quién tiene la pelota. Fundamental antes de entrar en una conversación que llevas días sin leer.</div></div></div>
+      <div class="tut-step"><div class="tut-num">3</div><div class="tut-body"><div class="tut-title">Borrador con Copilot — al responder</div><div class="tut-desc">Al hacer clic en <strong>Responder</strong>, verás el botón "Borrador con Copilot" encima del área de escritura. Haz clic → escribe tu instrucción (no solo "responde", sino el objetivo de la respuesta) → Copilot lee el hilo completo y genera la respuesta en contexto. Después ajusta con los botones de tono: <strong>Más formal / Más informal / Más corto / Más largo</strong>.</div></div></div>
+      <div class="tut-step"><div class="tut-num">4</div><div class="tut-body"><div class="tut-title">Coaching de correo — revisión inteligente</div><div class="tut-desc">Escribe tu propio correo → antes de enviar, haz clic en el icono de Copilot en la barra de herramientas de redacción → <strong>"Entrenador de correo"</strong> o <strong>"Coaching"</strong>. Copilot analiza tu correo y te da sugerencias sobre: tono, claridad, longitud, frases que pueden sonar mal y cómo mejorar el impacto. Muy útil para correos delicados.</div></div></div>
+      <div class="tut-step"><div class="tut-num">5</div><div class="tut-body"><div class="tut-title">Prioridad y categorización inteligente</div><div class="tut-desc">Copilot puede sugerir categorías y prioridades para tu bandeja. En el panel de Copilot escribe: "¿Qué correos requieren mi atención urgente hoy?" o "¿Hay correos sin respuesta que lleven más de 3 días?". Copilot hace un análisis de tu bandeja y te señala lo más crítico.</div></div></div>
+    </div>
+
+    <div class="divider"></div>
+    <h2>Funcionalidades avanzadas</h2>
+
+    <div class="expand-section" id="exp-out1">
+      <div class="expand-header" onclick="toggleExpand('exp-out1')">
+        <span class="expand-title">📅 Preparación de reuniones desde el correo</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <p>Desde un hilo de correo, Copilot puede prepararte para la reunión asociada — extrayendo contexto, puntos pendientes y posibles agendas.</p>
+        <div class="prompt" id="oc1">Basándote en este hilo de correo, prepárame para la próxima reunión con este cliente.
+Dame: los temas pendientes de resolver, los puntos de fricción detectados, 
+los compromisos que ya hemos adquirido, 
+y 3 preguntas que debería hacer para cerrar los temas abiertos.<button class="copy-btn" onclick="copyPrompt('oc1')">⎘ Copiar</button></div>
+      </div>
+    </div>
+
+    <div class="expand-section" id="exp-out2">
+      <div class="expand-header" onclick="toggleExpand('exp-out2')">
+        <span class="expand-title">🔁 Automatización con reglas y Power Automate</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <p>Combinando Copilot con Power Automate puedes crear respuestas automáticas inteligentes. Ejemplo: cuando llega un email de soporte, Power Automate activa Copilot para generar un borrador de respuesta y lo envía o guarda según la urgencia.</p>
+        <div class="tip-block">💡 <strong>Flujo básico:</strong> Power Automate → Trigger "Nuevo correo en bandeja X" → Acción "Copilot: generar respuesta con instrucción" → Acción "Guardar como borrador" o "Enviar directamente".</div>
+      </div>
+    </div>
+
+    <div class="expand-section" id="exp-out3">
+      <div class="expand-header" onclick="toggleExpand('exp-out3')">
+        <span class="expand-title">✍️ Correos de seguimiento automático</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <p>Una de las tareas más repetitivas: seguimiento de propuestas sin respuesta. Copilot puede generar estos follow-ups de forma que no suenen automáticos.</p>
+        <div class="prompt" id="oc2">Han pasado [X días] desde que envié la propuesta y no hay respuesta.
+Escribe un follow-up que:
+- No suene automatizado ni desesperado
+- Añada un dato nuevo o reflexión que justifique el contacto
+- Tenga una CTA clara y fácil de responder (sí/no o proponer fecha)
+Máximo 4 líneas. 
+Sin "solo quería saber si…" ni "¿has podido revisar?"<button class="copy-btn" onclick="copyPrompt('oc2')">⎘ Copiar</button></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h2>Prompts para situaciones difíciles</h2>
+    <h3>Cliente molesto</h3>
+    <div class="prompt" id="o1">El cliente está molesto. Redacta una respuesta que:
+- Empiece reconociendo el problema (sin sobreexcusarse)
+- Explique brevemente qué ocurrió y que está resuelto
+- Ofrezca compensación o garantía adicional
+- Cierre transmitiendo que el cliente está en buenas manos
+Tono: firme, calmado, empático. Sin "disculpe las molestias".<button class="copy-btn" onclick="copyPrompt('o1')">⎘ Copiar</button></div>
+    <h3>Comunicar subida de precio</h3>
+    <div class="prompt" id="o2">Tengo que comunicar una subida de precio el próximo trimestre.
+Escribe el correo de manera que:
+- Lo presente como inversión en calidad, no como subida
+- Anticipe la objeción más probable y la responda en el mismo correo
+- Incluya el beneficio concreto que justifica el cambio
+- Invite a hablar si tiene preguntas (sin pedir permiso)
+Tono: seguro, profesional, sin disculpas innecesarias.<button class="copy-btn" onclick="copyPrompt('o2')">⎘ Copiar</button></div>
+    <div class="dangerbox">🚫 Dile siempre que evite: "No dudes en contactarnos" · "Disculpe las molestias" · "Sin otro particular" · "Esperando su respuesta" · "Solo quería saber si…" · "En respuesta a su correo de fecha…"</div>
+
+    <div class="divider"></div>
+    <h2>Rutina diaria recomendada con Copilot en Outlook</h2>
+    <div class="card">
+      <div class="shortcut-row"><span style="font-size:13px;color:var(--text2)">☀️ Al abrir el correo (mañana)</span><span style="font-size:12px;color:var(--text3)">Resumir los hilos nuevos — en 5 min sabes el estado de todo</span></div>
+      <div class="shortcut-row"><span style="font-size:13px;color:var(--text2)">📝 Correo elaborado</span><span style="font-size:12px;color:var(--text3)">Borrador con Copilot → objetivo + tono + longitud</span></div>
+      <div class="shortcut-row"><span style="font-size:13px;color:var(--text2)">⚡ Correo interno simple</span><span style="font-size:12px;color:var(--text3)">Usa sugerencias en línea (texto predictivo de Copilot)</span></div>
+      <div class="shortcut-row"><span style="font-size:13px;color:var(--text2)">⚠️ Correo delicado</span><span style="font-size:12px;color:var(--text3)">Escribe tú → "Coaching de correo" → ajusta según sugerencias</span></div>
+      <div class="shortcut-row"><span style="font-size:13px;color:var(--text2)">🌙 Al final del día</span><span style="font-size:12px;color:var(--text3)">"¿Hay acciones pendientes en mis correos de hoy que no he respondido?"</span></div>
+    </div>
+  </div>
+
+  <!-- POWERPOINT — EXPANDIDO -->
+  <div id="ppt" class="page">
+    <div class="page-header"><div class="section-chip">08 · Tutorial completo</div>
+      <div class="app-hdr"><div class="app-emoji" style="background:rgba(209,52,56,.15)">📊</div><div><div class="app-name">Copilot en PowerPoint</div><div class="app-sub">Ideas → Diapositivas en minutos</div></div></div>
+      <p class="lead">Copilot en PowerPoint genera estructura y contenido. El diseño visual sigue siendo tu responsabilidad, pero el 70% del trabajo pesado lo hace Copilot.</p>
+    </div>
+
+    <h2>Flujo de trabajo correcto</h2>
+    <div class="tutorial-steps">
+      <div class="tut-step"><div class="tut-num">1</div><div class="tut-body"><div class="tut-title">Primero redacta en Word, luego presenta en PPT</div><div class="tut-desc">El flujo más potente: redacta todo el contenido en Word con ayuda de Copilot (tiene más flexibilidad para editar texto). Después en PowerPoint usa <strong>"Crear presentación desde archivo"</strong> → selecciona el Word → Copilot convierte automáticamente el contenido en slides con estructura, títulos y puntos clave.</div></div></div>
+      <div class="tut-step"><div class="tut-num">2</div><div class="tut-body"><div class="tut-title">Pide el índice antes del contenido</div><div class="tut-desc">Si creas desde cero, primero pide solo la estructura: "Dame el índice de 8 slides para presentar [tema] a [público]". Revisa y aprueba el índice. Luego genera el contenido slide por slide o todo a la vez. Cambiar la estructura después de generar el contenido es costoso.</div></div></div>
+      <div class="tut-step"><div class="tut-num">3</div><div class="tut-body"><div class="tut-title">Ajusta slide por slide</div><div class="tut-desc">Selecciona una slide → abre el panel Copilot → modifica solo esa slide: "Reescribe esta slide para que suene más urgente", "Cambia el título para que sea una pregunta provocadora", "Añade 2 datos estadísticos relevantes sobre este tema".</div></div></div>
+      <div class="tut-step"><div class="tut-num">4</div><div class="tut-body"><div class="tut-title">Genera notas de ponente automáticamente</div><div class="tut-desc">Una función poco conocida: Copilot puede generar las notas del presentador para cada slide. En el panel Copilot: "Genera notas de ponente detalladas para cada slide, incluyendo puntos clave a decir y posibles preguntas del público". Las notas aparecen en el panel inferior de cada diapositiva.</div></div></div>
+      <div class="tut-step"><div class="tut-num">5</div><div class="tut-body"><div class="tut-title">Usa PowerPoint Designer junto a Copilot</div><div class="tut-desc">Copilot genera el contenido; <strong>Designer</strong> (el asistente de diseño de PPT) sugiere layouts visuales atractivos para ese contenido. Úsalos juntos: Copilot crea el texto → Designer propone el diseño → tú eliges el que más te gusta. Clic en <strong>Inicio → Designer</strong> para activarlo.</div></div></div>
+    </div>
+
+    <div class="divider"></div>
+    <h2>Funcionalidades avanzadas</h2>
+    <div class="expand-section" id="exp-ppt1">
+      <div class="expand-header" onclick="toggleExpand('exp-ppt1')">
+        <span class="expand-title">🎯 Adaptar presentación a diferentes públicos</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <p>Una misma presentación puede necesitar versiones distintas según el público. Copilot puede adaptar el contenido sin cambiar la estructura.</p>
+        <div class="prompt" id="pc1">Esta presentación está pensada para un perfil técnico (equipo IT).
+Crea una versión adaptada para un director general no técnico.
+Cambios necesarios:
+- Elimina o simplifica todos los términos técnicos
+- Cambia el foco de "cómo funciona" a "qué le cuesta no tenerlo"
+- En cada slide, añade un dato de impacto en negocio (euros, tiempo, riesgo)
+- Mantén la misma estructura de slides<button class="copy-btn" onclick="copyPrompt('pc1')">⎘ Copiar</button></div>
+      </div>
+    </div>
+    <div class="expand-section" id="exp-ppt2">
+      <div class="expand-header" onclick="toggleExpand('exp-ppt2')">
+        <span class="expand-title">❓ Slide de preguntas frecuentes y objeciones</span>
+        <span class="expand-arrow">▼</span>
+      </div>
+      <div class="expand-body">
+        <div class="prompt" id="pc2">Basándote en el contenido de esta presentación, crea:
+1) Una slide de "Preguntas frecuentes" con las 5 dudas más probables del público
+2) Una slide de "Objeciones habituales" con la objeción y su respuesta breve (máx 2 líneas cada una)
+3) Una slide final de "Próximos pasos" con 3 acciones concretas y sus fechas estimadas
+El público es: [describe el perfil]<button class="copy-btn" onclick="copyPrompt('pc2')">⎘ Copiar</button></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h2>Prompts esenciales para PowerPoint</h2>
+    <div class="prompt" id="p1">Convierte este documento en una presentación de 8 diapositivas
+para un cliente que evalúa contratar nuestros servicios IT.
+La última slide debe ser un call to action claro.
+Público: director general de pyme, no técnico.
+Máximo 4 puntos por slide, lenguaje de negocio.<button class="copy-btn" onclick="copyPrompt('p1')">⎘ Copiar</button></div>
+    <div class="prompt" id="p3">Genera notas de ponente para cada slide de esta presentación.
+Para cada slide incluye:
+- Los 3 puntos clave que debo decir en voz alta
+- Una transición natural a la siguiente slide
+- Una posible pregunta del público y cómo responderla<button class="copy-btn" onclick="copyPrompt('p3')">⎘ Copiar</button></div>
+    <div class="warnbox">⚠️ Copilot no controla el diseño visual final (colores, imágenes, layouts). Usa PowerPoint Designer o Canva para el diseño — Copilot para el contenido.</div>
+  </div>
+
+  <!-- TEAMS + LOOP -->
+  <div id="teams" class="page">
+    <div class="page-header"><div class="section-chip">09 · Tutorial</div>
+      <div class="app-hdr"><div class="app-emoji" style="background:rgba(98,100,167,.15)">💬</div><div><div class="app-name">Copilot en Teams y Loop</div><div class="app-sub">Reuniones más productivas</div></div></div>
+      <p class="lead">En Teams, Copilot transforma las reuniones — transcribe, resume, extrae acciones y permite hacer preguntas sobre lo que se dijo.</p>
+    </div>
+    <div class="tutorial-steps">
+      <div class="tut-step"><div class="tut-num">1</div><div class="tut-body"><div class="tut-title">Activar Copilot en una reunión</div><div class="tut-desc">Durante una reunión → tres puntos (...) → "Copilot". Se abre panel lateral. <strong>Requisito:</strong> el organizador debe haber habilitado la transcripción. Sin ella, Copilot no puede actuar sobre el contenido hablado.</div></div></div>
+      <div class="tut-step"><div class="tut-num">2</div><div class="tut-body"><div class="tut-title">Preguntas en tiempo real</div><div class="tut-desc">"¿Qué puntos clave se han discutido hasta ahora?", "¿Cuáles son las posiciones diferentes sobre este tema?", "¿Quién se ha comprometido a qué hasta ahora?". Copilot responde sobre la transcripción en tiempo real.</div></div></div>
+      <div class="tut-step"><div class="tut-num">3</div><div class="tut-body"><div class="tut-title">Extraer acciones al terminar</div><div class="tut-desc">"Dame todas las tareas acordadas con el responsable asignado", "¿Qué quedó sin resolver?", "¿Cuáles son los puntos de desacuerdo que hay que tratar en la próxima reunión?".</div></div></div>
+      <div class="tut-step"><div class="tut-num">4</div><div class="tut-body"><div class="tut-title">Pestaña Recapitulación — después de la reunión</div><div class="tut-desc">En la reunión grabada → pestaña "Recapitulación". Aquí puedes seguir preguntando a Copilot: "¿Cuál fue el acuerdo final sobre el precio?", "¿Qué dijo Juan sobre los plazos?", "Resume los compromisos en un email listo para enviar a todos los asistentes".</div></div></div>
+    </div>
+    <div class="prompt" id="t1">Resume esta reunión para compartir con quienes no asistieron.
+Incluye: decisiones tomadas, tareas asignadas con responsable y fecha, 
+temas abiertos para la próxima reunión, y cualquier riesgo identificado.
+Formato de email, tono profesional, máximo 200 palabras.<button class="copy-btn" onclick="copyPrompt('t1')">⎘ Copiar</button></div>
+    <div class="infobox">💡 La función de resumen de reunión requiere <strong>transcripción activada</strong>. El administrador de Teams debe habilitarla en las políticas del tenant en el portal de administración de Microsoft 365.</div>
+  </div>
+
+  <!-- AGENTES -->
+  <div id="agentes" class="page">
+    <div class="page-header"><div class="section-chip">10 · PRO</div><h1>Agentes de Copilot</h1><p class="lead">Un agente es Copilot con una identidad, un objetivo y un conjunto de instrucciones permanentes. No le dices qué hacer cada vez — ya lo sabe.</p></div>
+    <div class="compare">
+      <div class="cb" style="border-color:var(--border);background:var(--bg3)"><div class="clabel" style="color:var(--text3)">Sin agente</div><div class="ctext">Cada vez empiezas de cero. Sin contexto, sin criterio propio, respuestas genéricas.</div></div>
+      <div class="cg"><div class="clabel">Con agente configurado</div><div class="ctext">Tiene tu contexto, sector, criterios y forma de trabajar. Siempre. Sin repetir.</div></div>
+    </div>
+    <div class="divider"></div>
+    <h2>Los 4 componentes de un agente</h2>
+    <div class="steps">
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">1</div><div class="step-body"><div class="step-title">Identidad y rol</div><div class="step-desc">Quién es, qué hace, área de expertise.<br><code style="font-size:11px;color:var(--text3)">"Eres consultor IT especializado en ciberseguridad para pymes. Conoces nuestros servicios."</code></div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">2</div><div class="step-body"><div class="step-title">Instrucciones de comportamiento</div><div class="step-desc">Cómo responde, qué tono usa, qué evita.<br><code style="font-size:11px;color:var(--text3)">"Siempre en español. Sin tecnicismos. Nunca prometas plazos sin consultarme."</code></div></div></div>
+      <div class="step-item"><div class="step-line"></div><div class="step-dot">3</div><div class="step-body"><div class="step-title">Fuentes de conocimiento</div><div class="step-desc">Documentos de SharePoint, manuales, catálogos, contratos tipo. El agente los consulta para dar respuestas específicas a tu empresa.</div></div></div>
+      <div class="step-item"><div class="step-dot">4</div><div class="step-body"><div class="step-title">Acciones disponibles</div><div class="step-desc">Enviar correos, crear tareas en Planner, actualizar listas SharePoint, responder en Teams. Los agentes avanzados actúan, no solo responden.</div></div></div>
+    </div>
+    <div class="divider"></div>
+    <h2>Agentes más útiles</h2>
+    <div class="agent-card"><div class="agent-icon" style="background:var(--red-bg)">🛡️</div><div><div class="agent-name">Agente de ciberseguridad</div><div class="agent-desc">Analiza correos y documentos buscando phishing, ingeniería social y anomalías. Clasifica riesgo y recomienda acción.</div><div class="agent-prompt">Instrucción: "Eres analista de ciberseguridad. Clasifica cada correo como Bajo/Medio/Alto riesgo. Explica el motivo en 2 frases y recomienda la acción concreta."</div></div></div>
+    <div class="agent-card"><div class="agent-icon" style="background:var(--cyan-dim)">💼</div><div><div class="agent-name">Agente comercial / MSP</div><div class="agent-desc">Conoce tu catálogo, precios y argumentario. Prepara respuestas, propuestas y gestiona objeciones con el criterio de tu empresa.</div><div class="agent-prompt">Instrucción: "Conoces todos nuestros servicios IT [adjunta catálogo]. Identifica la solución más adecuada. Nunca menciones precios sin consultarme."</div></div></div>
+    <div class="agent-card"><div class="agent-icon" style="background:var(--green-bg)">📊</div><div><div class="agent-name">Agente analista de datos</div><div class="agent-desc">Revisa Excel periódicamente, genera resúmenes, detecta anomalías y crea informes para dirección.</div><div class="agent-prompt">Instrucción: "Al recibir datos genera: resumen ejecutivo en 5 líneas, 3 insights clave, 1 alerta si hay algo inusual, 2 recomendaciones de acción."</div></div></div>
+    <div class="agent-card"><div class="agent-icon" style="background:var(--amber-bg)">📧</div><div><div class="agent-name">Agente soporte / helpdesk</div><div class="agent-desc">Responde tickets clasificando por urgencia con tono correcto según el perfil del usuario.</div><div class="agent-prompt">Instrucción: "Clasifica: urgencia (1-3), categoría, solución conocida o escalado. Responde al usuario en lenguaje no técnico."</div></div></div>
+    <div class="agent-card"><div class="agent-icon" style="background:var(--purple-dim)">🧠</div><div><div class="agent-name">Agente de reuniones</div><div class="agent-desc">Genera briefing del cliente, preguntas clave, objeciones probables y argumento de cierre antes de cada reunión.</div><div class="agent-prompt">Instrucción: "Al recibir nombre del cliente y objetivo, genera: briefing en 5 líneas, 3 preguntas clave, objeciones con respuesta, frase de apertura."</div></div></div>
+    <div class="infobox" style="margin-top:14px">🔧 <strong>Dónde se crean:</strong> <strong>Copilot Studio</strong> → <code style="font-size:11px">copilotstudio.microsoft.com</code>. No requiere programación. Interfaz visual para instrucciones, documentos de conocimiento y acciones.</div>
+  </div>
+
+  <!-- INTEGRACIONES -->
+  <div id="integraciones" class="page">
+    <div class="page-header"><div class="section-chip">11 · PRO</div><h1>Integraciones y automatizaciones</h1><p class="lead">Copilot integrado con Power Automate, Graph API y conectores de terceros permite automatizar flujos completos — no solo generar texto.</p></div>
+    <div class="integration-card">
+      <div class="int-header"><div class="int-icon" style="background:rgba(0,114,198,.15)">⚡</div><div><div class="int-name">Respuesta automática de soporte</div><div class="int-sub">Outlook + Power Automate + Copilot</div></div></div>
+      <p>Cuando llega un ticket por email, Power Automate envía el contenido al agente Copilot de soporte, genera la respuesta y la envía automáticamente o como borrador.</p>
+      <div class="tutorial-steps" style="margin-top:14px">
+        <div class="tut-step"><div class="tut-num">1</div><div class="tut-body"><div class="tut-title">Crea el flujo en Power Automate</div><div class="tut-desc">Trigger: "Cuando llega un nuevo correo a [bandeja de soporte]". Condición: asunto contiene palabras clave del ticket.</div></div></div>
+        <div class="tut-step"><div class="tut-num">2</div><div class="tut-body"><div class="tut-title">Añade la acción Copilot</div><div class="tut-desc">Acción: "Obtener respuesta de Copilot". Input: cuerpo del correo + instrucción del agente. Output: texto generado.</div></div></div>
+        <div class="tut-step"><div class="tut-num">3</div><div class="tut-body"><div class="tut-title">Enviar o guardar borrador</div><div class="tut-desc">Según nivel de confianza: envía automáticamente o guarda borrador para aprobación humana.</div></div></div>
+      </div>
+    </div>
+    <div class="integration-card">
+      <div class="int-header"><div class="int-icon" style="background:rgba(16,124,16,.15)">📊</div><div><div class="int-name">Informe semanal automático</div><div class="int-sub">Excel + Power Automate + Copilot + Outlook</div></div></div>
+      <p>Cada lunes, Power Automate abre el Excel de la semana anterior, activa Copilot para generar el resumen ejecutivo y lo envía por email a dirección.</p>
+      <div class="prompt" id="int1">Lee los datos de la semana pasada.
+Genera un informe ejecutivo con:
+- KPI principal vs semana anterior (% de variación)
+- La métrica más positiva y la más preocupante
+- 2 recomendaciones de acción para esta semana
+- Semáforo: Verde / Amarillo / Rojo
+Formato: email directivo, máximo 150 palabras.<button class="copy-btn" onclick="copyPrompt('int1')">⎘ Copiar</button></div>
+    </div>
+    <div class="integration-card">
+      <div class="int-header"><div class="int-icon" style="background:rgba(63,37,191,.15)">🔗</div><div><div class="int-name">Integración CRM / Dynamics 365</div><div class="int-sub">Copilot + Graph API + Dynamics 365</div></div></div>
+      <p>Copilot puede conectarse a Dynamics 365 mediante plugins para consultar datos del cliente en tiempo real: historial, tickets abiertos, contratos vigentes.</p>
+      <ul class="checklist" style="margin-top:12px">
+        <li><span class="ci ok">✓</span>Consultar ficha del cliente antes de una llamada</li>
+        <li><span class="ci ok">✓</span>Actualizar estado de oportunidad desde Teams</li>
+        <li><span class="ci ok">✓</span>Generar propuesta con datos reales del CRM</li>
+        <li><span class="ci ok">✓</span>Crear tareas en CRM desde el resumen de reunión de Teams</li>
+      </ul>
+    </div>
+    <div class="integration-card">
+      <div class="int-header"><div class="int-icon" style="background:rgba(34,239,224,.1)">📋</div><div><div class="int-name">SharePoint como base de conocimiento</div><div class="int-sub">Copilot + SharePoint</div></div></div>
+      <p>Copilot puede buscar en documentos de SharePoint para responder preguntas de negocio sin necesidad de abrir cada archivo.</p>
+      <div class="prompt" id="int2">¿Qué dice nuestro procedimiento de baja de empleados sobre 
+los accesos a sistemas IT? Busca en los documentos de RRHH 
+de SharePoint y dame los pasos clave en orden.<button class="copy-btn" onclick="copyPrompt('int2')">⎘ Copiar</button></div>
+    </div>
+    <div class="warnbox">⚠️ Power Automate requiere <strong>licencias adicionales</strong> según el volumen de ejecuciones. Consulta con tu administrador M365 antes de implementar en producción.</div>
+  </div>
+
+  <!-- IMÁGENES -->
+  <div id="imagenes" class="page">
+    <div class="page-header"><div class="section-chip">12 · Técnico</div><h1>Generación de imágenes con Copilot</h1><p class="lead">Copilot integra DALL·E 3 para generar imágenes desde texto. Disponible en Copilot.microsoft.com y Microsoft Designer.</p></div>
+    <div class="g2">
+      <div class="card"><div class="card-title">✓ Disponible en</div><ul class="checklist"><li><span class="ci ok">✓</span>Copilot.microsoft.com</li><li><span class="ci ok">✓</span>Microsoft Designer</li><li><span class="ci ok">✓</span>App Copilot iOS/Android</li><li><span class="ci ok">✓</span>Windows 11 (barra tareas)</li></ul></div>
+      <div class="card"><div class="card-title">✗ No disponible en</div><ul class="checklist"><li><span class="ci no">✗</span>Word (no genera imágenes)</li><li><span class="ci no">✗</span>Excel</li><li><span class="ci no">✗</span>Outlook</li><li><span class="ci no">✗</span>PPT (solo sugerencias stock)</li></ul></div>
+    </div>
+    <div class="formula"><div class="formula-lbl">Estructura del prompt de imagen</div><div class="formula-main">Sujeto + Estilo + Iluminación + Composición + Detalles técnicos</div><div class="formula-ex">Ejemplo: "Oficina moderna con servidores IT, fotografía corporativa, iluminación natural, plano abierto, alta resolución, paleta azul y blanco"</div></div>
+    <div class="prompt" id="img1">Sala de servidores moderna, vista frontal, iluminación azul y verde,
+cables organizados, estilo fotografía técnica profesional,
+sin personas, fondo oscuro. Para presentación corporativa.<button class="copy-btn" onclick="copyPrompt('img1')">⎘ Copiar</button></div>
+    <div class="prompt" id="img2">Ilustración flat design: escudo digital con candado,
+colores cyan y azul marino, estilo minimalista vectorial,
+fondo blanco, icono para web de ciberseguridad.<button class="copy-btn" onclick="copyPrompt('img2')">⎘ Copiar</button></div>
+    <div class="infobox">💡 Para mejores resultados, sé específico con el <strong>estilo visual</strong> (fotografía, flat design, 3D render, acuarela) y la <strong>composición</strong> (plano detalle, vista aérea, perspectiva frontal).</div>
+  </div>
+
+  <!-- ERRORES -->
+  <div id="errores" class="page">
+    <div class="page-header"><div class="section-chip">13 · Recursos</div><h1>Los 12 errores más comunes</h1><p class="lead">Entender por qué Copilot da malos resultados es tan importante como saber usarlo bien.</p></div>
+    <div class="card"><div class="card-title">Error 1 — Prompt de una sola palabra</div><div class="prompt-label">❌ Malo</div><div class="prompt prompt-bad">"Correo" / "Resumen" / "Analiza"</div><p style="font-size:13px;margin:0">Sin contexto ni objetivo. Resultado: texto genérico inútil.</p><div class="successbox" style="margin-top:8px">✓ Usa siempre: Tarea + Contexto + Tono</div></div>
+    <div class="card"><div class="card-title">Error 2 — No elegir el modelo correcto</div><p style="font-size:13px">Usar GPT 5.3 Quick Response para una propuesta compleja cuando necesitas GPT 5.4 Think Deeper. La calidad del modelo importa tanto como el prompt.</p><div class="successbox" style="margin-top:8px">✓ Para tareas complejas: activa GPT 5.4 Think Deeper antes de escribir el prompt</div></div>
+    <div class="card"><div class="card-title">Error 3 — Aceptar el primer resultado sin iterar</div><p style="font-size:13px">El primer output es siempre un borrador. Los usuarios avanzados iteran 2-4 veces. Trata el resultado como punto de partida.</p></div>
+    <div class="card"><div class="card-title">Error 4 — No dar contexto del destinatario</div><p style="font-size:13px">"El cliente es el CFO de una pyme de 20 personas, sin IT, considerando no renovar" cambia todo el resultado comparado con "un cliente".</p></div>
+    <div class="card"><div class="card-title">Error 5 — Usarlo como buscador en tiempo real</div><div class="prompt-label">❌ Malo</div><div class="prompt prompt-bad">"¿Cuál es el mejor antivirus en 2025?" / "¿Qué dijo Microsoft esta semana?"</div><p style="font-size:13px;margin:0">Copilot en Word/Excel/Outlook no tiene internet. Usa Copilot en Bing para búsquedas actuales.</p></div>
+    <div class="card"><div class="card-title">Error 6 — Publicar datos numéricos sin verificar</div><p style="font-size:13px"><strong style="color:var(--red)">Nunca envíes datos numéricos generados por Copilot sin verificarlos.</strong> Puede inventar estadísticas que suenan plausibles.</p></div>
+    <div class="card"><div class="card-title">Error 7 — No formatear Excel como Tabla</div><p style="font-size:13px">El error técnico más frecuente. Sin formato Tabla oficial (Insertar → Tabla), las capacidades de Copilot en Excel se reducen drásticamente o el botón aparece en gris.</p></div>
+    <div class="card"><div class="card-title">Error 8 — Documentos en local</div><p style="font-size:13px">Copilot requiere OneDrive o SharePoint. Si el archivo está solo en tu disco duro, no funciona.</p></div>
+    <div class="card"><div class="card-title">Error 9 — Instrucciones contradictorias</div><div class="prompt-label">❌ Malo</div><div class="prompt prompt-bad">"Corto pero detallado, formal pero cercano, urgente pero sin presión"</div><p style="font-size:13px;margin:0">Copilot hace el promedio de todo. Divide en 2-3 prompts encadenados.</p></div>
+    <div class="card"><div class="card-title">Error 10 — Asumir que recuerda conversaciones</div><p style="font-size:13px">Cada sesión empieza desde cero. Sin agentes, debes repetir el contexto cada vez.</p></div>
+    <div class="card"><div class="card-title">Error 11 — No usar el modo Think Deeper para tareas complejas</div><p style="font-size:13px">Muchos usuarios usan siempre Quick Response y se pierden la diferencia de calidad de Think Deeper en propuestas, análisis y argumentarios.</p></div>
+    <div class="card"><div class="card-title">Error 12 — No guardar prompts que funcionan</div><p style="font-size:13px">Construye tu biblioteca personal en OneNote o Word. Los usuarios expertos no inventan prompts nuevos — adaptan los suyos en segundos.</p></div>
+  </div>
+
+  <!-- BIBLIOTECA -->
+  <div id="biblioteca" class="page">
+    <div class="page-header"><div class="section-chip">14 · Recursos</div><h1>Biblioteca de prompts</h1><p class="lead">Prompts listos para copiar y adaptar. Guárdalos en OneNote o en un documento Word.</p></div>
+    <div id="lib-tabs" class="pill-nav">
+      <button class="pill on" onclick="filterLib('all',this)">Todos</button>
+      <button class="pill" onclick="filterLib('clientes',this)">Clientes</button>
+      <button class="pill" onclick="filterLib('analisis',this)">Análisis</button>
+      <button class="pill" onclick="filterLib('documentos',this)">Documentos</button>
+      <button class="pill" onclick="filterLib('it',this)">IT / MSP</button>
+      <button class="pill" onclick="filterLib('reuniones',this)">Reuniones</button>
+    </div>
+    <div class="lib-item" data-cat="clientes"><h3>Cliente nuevo — primera propuesta</h3><div class="prompt" id="l1">Actúa como consultor IT senior.
+Escribe un correo de presentación de propuesta para [tipo de cliente].
+Objetivo: que quiera una reunión, no que acepte ya.
+Tono: experto, cercano, sin presión. Máximo 120 palabras.
+Destaca 1 beneficio concreto relevante para su sector.<button class="copy-btn" onclick="copyPrompt('l1')">⎘ Copiar</button></div></div>
+    <div class="lib-item" data-cat="clientes"><h3>Cliente que cuestiona el precio</h3><div class="prompt" id="l2">El cliente dice que somos caros. Escribe una respuesta que:
+- No justifique el precio a la defensiva
+- Reformule en términos de riesgo y coste real de no tenerlo
+- Incluya una pregunta que le haga reflexionar
+Tono: seguro, sin urgencia. Máximo 5 párrafos.<button class="copy-btn" onclick="copyPrompt('l2')">⎘ Copiar</button></div></div>
+    <div class="lib-item" data-cat="clientes"><h3>Follow-up sin respuesta</h3><div class="prompt" id="l3">Han pasado [X días] desde la propuesta. Escribe un follow-up que:
+- No suene desesperado
+- Añada un dato nuevo que justifique el contacto
+- Tenga una CTA fácil (sí/no o fecha)
+Máximo 4 líneas. Sin "solo quería saber si…"<button class="copy-btn" onclick="copyPrompt('l3')">⎘ Copiar</button></div></div>
+    <div class="lib-item" data-cat="clientes"><h3>Subida de precio</h3><div class="prompt" id="l4">Comunica una subida de precio el próximo trimestre.
+Preséntalo como inversión en calidad, no como subida.
+Anticipa la objeción más probable y respóndela en el mismo correo.
+Invita a hablar si tiene preguntas.
+Tono: seguro, sin disculpas.<button class="copy-btn" onclick="copyPrompt('l4')">⎘ Copiar</button></div></div>
+    <div class="lib-item" data-cat="analisis reuniones"><h3>Preparación de reunión</h3><div class="prompt" id="l5">Reunión en [X tiempo] con [tipo de persona].
+Objetivo: [objetivo].
+Dame:
+- Briefing de 5 líneas
+- Las 3 preguntas más importantes
+- Posibles objeciones y cómo responderlas
+- Resultado concreto que debo lograr
+- Frase de apertura más efectiva<button class="copy-btn" onclick="copyPrompt('l5')">⎘ Copiar</button></div></div>
+    <div class="lib-item" data-cat="analisis"><h3>Evaluación de propuesta como cliente</h3><div class="prompt" id="l6">Actúa como el cliente que recibirá esta propuesta.
+1) ¿Qué te convence?
+2) ¿Qué te genera dudas?
+3) ¿Qué echas en falta para decidir?
+4) ¿En qué punto abandonarías la lectura?
+Sé crítico como un comprador exigente.<button class="copy-btn" onclick="copyPrompt('l6')">⎘ Copiar</button></div></div>
+    <div class="lib-item" data-cat="documentos"><h3>Informe ejecutivo de 1 página</h3><div class="prompt" id="l7">Convierte estos datos en un informe ejecutivo de máximo 1 página.
+Estructura: situación / problema / solución / próximos pasos con responsable y fecha.
+Tono: lenguaje de dirección, orientado a decisión.<button class="copy-btn" onclick="copyPrompt('l7')">⎘ Copiar</button></div></div>
+    <div class="lib-item" data-cat="documentos"><h3>Argumentario de ventas</h3><div class="prompt" id="l8">Crea argumentario de 1 página para vender [servicio] a [perfil].
+Estructura: problema / solución / 3 beneficios medibles / garantía / respuesta a "es caro" / CTA.
+Tono: persuasivo sin presión, lenguaje de negocio.<button class="copy-btn" onclick="copyPrompt('l8')">⎘ Copiar</button></div></div>
+    <div class="lib-item" data-cat="it"><h3>Explicar problema técnico a no técnicos</h3><div class="prompt" id="l9">Explica [problema técnico] a un director sin IT usando una analogía cotidiana.
+Luego: impacto para su negocio (no para su sistema).
+Luego: solución en términos de acción y coste, no de tecnología.<button class="copy-btn" onclick="copyPrompt('l9')">⎘ Copiar</button></div></div>
+    <div class="lib-item" data-cat="it"><h3>Justificar inversión en seguridad</h3><div class="prompt" id="l10">Justifica la inversión en [solución].
+Habla de: coste de un incidente real (euros + horas), probabilidad real en pymes,
+coste nuestra solución vs coste del incidente.
+Por qué esperar es el mayor riesgo.
+Tono: consultor, no vendedor.<button class="copy-btn" onclick="copyPrompt('l10')">⎘ Copiar</button></div></div>
+    <div class="lib-item" data-cat="it"><h3>Análisis de correo de cliente IT</h3><div class="prompt" id="l11">Actúa como consultor IT/MSP senior. [Usa GPT 5.4 Think Deeper]
+Analiza este correo:
+1) Qué le preocupa realmente (más allá de lo que dice)
+2) Qué riesgo no está viendo
+3) Cómo responderle para que tome acción
+4) Las 2 objeciones más probables y cómo rebatirlas<button class="copy-btn" onclick="copyPrompt('l11')">⎘ Copiar</button></div></div>
+    <div class="lib-item" data-cat="reuniones"><h3>Acta de reunión automática</h3><div class="prompt" id="l12">Convierte estas notas en un acta estructurada.
+Incluye: asistentes, decisiones tomadas, tareas con responsable y fecha,
+temas pendientes para la próxima reunión.
+Formato: escaneble, máximo 1 página.<button class="copy-btn" onclick="copyPrompt('l12')">⎘ Copiar</button></div></div>
+    <div class="successbox" style="margin-top:20px">💾 <strong>Consejo:</strong> Crea un documento Word "Mis prompts Copilot" con secciones por tipo. Los expertos no crean prompts nuevos — adaptan los suyos en segundos.</div>
+  </div>
+
+</main>
+</div>
+
+<script>
+function show(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById(id);
+  if(pg)pg.classList.add('active');
+  if(btn){btn.classList.add('active')}
+  else{document.querySelectorAll('.nav-item').forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'"))b.classList.add('active')})}
+  document.querySelector('.main').scrollTop=0;window.scrollTo(0,0);closeSidebar();
+}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('open')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
+function copyPrompt(id){
+  const el=document.getElementById(id);if(!el)return;
+  const btn=el.querySelector('.copy-btn');
+  const clone=el.cloneNode(true);clone.querySelectorAll('.copy-btn').forEach(b=>b.remove());
+  const text=clone.innerText.trim();
+  navigator.clipboard.writeText(text).then(()=>{if(btn){btn.textContent='✓ Copiado';setTimeout(()=>{btn.innerHTML='⎘ Copiar'},2000)}}).catch(()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);if(btn){btn.textContent='✓ Copiado';setTimeout(()=>{btn.innerHTML='⎘ Copiar'},2000)}});
+}
+function filterLib(cat,btn){
+  document.querySelectorAll('#lib-tabs .pill').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  document.querySelectorAll('.lib-item').forEach(item=>{if(cat==='all'){item.style.display='';return}item.style.display=(item.getAttribute('data-cat')||'').includes(cat)?'':'none'});
+}
+function toggleTheme(){
+  const html=document.documentElement;const isDark=html.getAttribute('data-theme')==='dark';const newTheme=isDark?'light':'dark';
+  html.setAttribute('data-theme',newTheme);
+  const icon=isDark?'🌙':'☀';const label=isDark?'Modo oscuro':'Modo claro';
+  document.getElementById('theme-icon').textContent=icon;document.getElementById('theme-label').textContent=label;
+  const mi=document.getElementById('theme-icon-mobile');if(mi)mi.textContent=icon;
+  updateLogo(newTheme);
+}
+function toggleExpand(id){
+  const sec=document.getElementById(id);sec.classList.toggle('open');
+  const body=sec.querySelector('.expand-body');body.classList.toggle('open');
+}
+function updateLogo(theme){
+  const src=theme==='dark'?'logo-dark.png':'logo-light.png';
+  const ml=document.getElementById('logo-main');const tl=document.getElementById('logo-top');
+  if(ml)ml.src=src;if(tl)tl.src=src;
+}
+updateLogo(document.documentElement.getAttribute('data-theme'));
+</script>
+</body>
+</html>
